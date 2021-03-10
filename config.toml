@@ -627,7 +627,7 @@ uglyURLs = false
     ## Utterances
     enableUtterances = true
     utterancesRepo = "tmliang/blog_comments"
-    utterancesIssueTerm = "url"
+    utterancesIssueTerm = "pathname"
     utterancesTheme = "github-light"
     utterancesThemeDark = "photon-dark"
     utterancesLabel = ""
