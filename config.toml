@@ -1,7 +1,7 @@
 ##########################################
 # 站点配置
 
-baseURL = "https://Leungtamir.github.io"
+baseURL = "https://tmliang.github.io"
 title = "九月"
 languageCode = "zh-CN"
 hasCJKLanguage = true
@@ -92,7 +92,7 @@ uglyURLs = false
 # 作者信息
 [author]
     # 名字
-    name = "Tamir"
+    name = "tmliang"
     # 邮箱
     email = "tm.liang@outlook.com"
     # 座右铭或简介
@@ -170,27 +170,33 @@ uglyURLs = false
 [menu]
     ## 首页的底部链接
     [[menu.home]]
-        url = "/life/"
+        url = "/course/"
         weight = 1
         pre = "internal"
         post = "grav"
-        identifier = "life"
+        identifier = "course"
     [[menu.home]]
-        url = "/tech/"
+        url = "/research/"
         weight = 2
         pre = "internal"
         post = "wpexplorer"
-        identifier = "tech"
+        identifier = "research"
+    [[menu.home]]
+        url = "/tags/"
+        weight = 3
+        pre = "internal"
+        post = "globe-asia"
+        identifier = "tags"
     [[menu.home]]
         url = "/about/"
-        weight = 3
+        weight = 4
         pre = "internal"
         post = "user-circle"
         identifier = "about"
 
     ## 社交栏
     [[menu.socials]]
-        url = "https://github.com/Leungtamir"
+        url = "https://github.com/tmliang"
         name = "GitHub"
         weight = 1
         pre = "external"
@@ -425,7 +431,7 @@ uglyURLs = false
     # 说明：分区的名字即站点的 content 目录下
     #      的文件夹的名字。
 
-    mainSections = ["life", "tech"]
+    mainSections = ["course", "research"]
 
 
     ######################################
@@ -522,7 +528,7 @@ uglyURLs = false
 
     enableServiceWorker = false
     # 说明：需要第三方支持，暂见：
-    #      https://io-oi.me/tech/pwa-via-workbox/
+    #      https://io-oi.me/research/pwa-via-workbox/
 
 
     ######################################
@@ -552,7 +558,7 @@ uglyURLs = false
     # 说明：仅在生产环境（production）下渲染
 
     # 是否开启（全局设置）
-    enableComments = false
+    enableComments = true
     # 说明：文章的 Front Matter 中的 `comments`
     #      的优先级高于此处
 
@@ -580,8 +586,8 @@ uglyURLs = false
     # 说明：https://valine.js.org/
 
     ## Utterances
-    enableUtterances = false
-    utterancesRepo = ""
+    enableUtterances = true
+    utterancesRepo = "tmliang/blog_comments"
     utterancesIssueTerm = "pathname"
     utterancesTheme = "github-light"
     utterancesThemeDark = "photon-dark"
@@ -678,12 +684,12 @@ uglyURLs = false
     publishedDateIcon = "calendar-alt"
 
     # 是否显示修改时间
-    displayModifiedDate = true
+    displayModifiedDate = false
     # 修改时间的图标
     modifiedDateIcon = "calendar-check"
 
     # 是否显示过期时间
-    displayExpiredDate = true
+    displayExpiredDate = false
     # 过期时间的图标
     expiredDateIcon = "calendar-times"
 
@@ -963,7 +969,7 @@ uglyURLs = false
     enablePostCopyright = true
 
     # 是否显示（全局设置）
-    displayPostCopyright = false
+    displayPostCopyright = true
     # 说明：文章的 Front Matter 中的 `displayCopyright`
     #      的的优先级高于此处
 
@@ -1105,7 +1111,7 @@ uglyURLs = false
     # 页脚
 
     # 是否开启
-    enableFooter = false
+    enableFooter = true
     # 说明：「诗意人生」和「视频片段」首页布局
     #      的首页没有页脚
 
@@ -1194,7 +1200,7 @@ uglyURLs = false
     ######################################
     # 图片缩放
 
-    enableMediumZoom = true
+    enableMediumZoom = false
     # 说明：https://github.com/francoischalifour/medium-zoom
 
 
