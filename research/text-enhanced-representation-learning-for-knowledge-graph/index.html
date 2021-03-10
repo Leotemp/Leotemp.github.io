@@ -14,11 +14,11 @@
 
     <title>Text-Enhanced Representation Learning for Knowledge Graph | 九月</title>
 
-    <link rel="stylesheet" href="/css/meme.min.e7dd297b502eae3412ecbb27608a171a86996c29f686ff68c5b640e90d523031.css"/>
+    <link rel="stylesheet" href="/css/meme.min.41de9804dd86543be7c8994ee0b57559b765366a2c44e6f5c52a5c55b0448305.css"/>
 
     
     
-        <script src="/js/meme.min.7ad860bf4b0a842c9ccaad9e521fd3ff2d022bdf301dc9aeec54f6ec59dc6063.js"></script>
+        <script src="/js/meme.min.4d5bfea4092b8806c092f5955caee1dd7d271b29e48e4961a97a6c3c763d15b0.js"></script>
 
     
 
@@ -54,7 +54,7 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2019-09-18T18:14:51+08:00",
-        "dateModified": "2021-03-10T23:32:24+08:00",
+        "dateModified": "2021-03-10T23:34:56+08:00",
         "url": "https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/",
         "headline": "Text-Enhanced Representation Learning for Knowledge Graph",
         "description": "Text-Enhanced Representation Learning for Knowledge Graph (IJCAI-2016) [paper] Motivation TransE、TransH、TransR 在 1-N, N-1 和 N-N 关系中的表现不佳……",
@@ -103,7 +103,7 @@
 <meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/icons/apple-touch-icon.png" />
     <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2019-09-18T18:14:51&#43;08:00" />
-    <meta property="article:modified_time" content="2021-03-10T23:32:24&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-10T23:34:56&#43;08:00" />
     
     <meta property="article:section" content="research" />
 
@@ -325,6 +325,22 @@ $$L=\sum_{(h, r, t) \in \mathcal{S}\left(h^{\prime}, r, t^{\prime}\right) \in \m
 
 
         
+    
+
+        <div class="load-comments">
+            <div id="load-comments">加载评论</div>
+        </div>
+
+        
+
+        
+
+        
+            <div id="utterances"></div>
+        
+
+    
+
 
 
     </div>
@@ -398,6 +414,38 @@ $$L=\sum_{(h, r, t) \in \mathcal{S}\left(h^{\prime}, r, t^{\prime}\right) \in \m
 
 
 
+
+    
+
+        
+
+        
+
+        
+            <script>
+    function loadComments() {
+        (function() {
+            var utterances = document.getElementById("utterances");
+            var script = document.createElement('script');
+            script.src = 'https://utteranc.es/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('repo', 'tmliang\/blog_comments');
+            script.setAttribute('issue-term', 'url');
+            const isDark = getCurrentTheme() === 'dark';
+        if (isDark) {
+            script.setAttribute('theme', 'photon-dark');
+        } else {
+            script.setAttribute('theme', 'github-light');
+        }
+            
+            utterances.appendChild(script);
+        })();
+    }
+</script>
+        
+
+    
 
 
 
