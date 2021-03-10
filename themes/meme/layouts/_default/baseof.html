@@ -1,16 +1,21 @@
 <!DOCTYPE html>
-<html lang="{{ .Site.LanguageCode }}"{{ if .Site.Params.enableDarkMode }}{{ with .Site.Params.defaultTheme | default "light" }} data-theme="{{ . }}"{{ end }}{{ end }}>
+<html lang="{{ .Site.LanguageCode }}"{{ if and .Site.Params.enableDarkMode .Site.Params.overrideSystemPreferences }}{{ with .Site.Params.defaultTheme | default "light" }} data-theme="{{ . }}"{{ end }}{{ end }}>
     {{ partial "head.html" . }}
     <body>
         <div class="container">
             {{ partial "header.html" . }}
-            {{ partial "menu.html" . }}
-            {{ partial "multilingual.html" . }}
-            {{ partial "dark-mode.html" . }}
+            {{ if ne .Site.Params.headerLayout "flex" }}
+                {{ if or (and .IsHome .Site.Params.displayMenuInHome) (and (not .IsHome) .Site.Params.enableMenu) }}
+                    {{ partial "menu.html" . }}
+                {{ end }}
+                {{ partial "components/multilingual.html" . }}
+                {{ partial "components/dark-mode.html" . }}
+            {{ end }}
             {{ block "main" . }}{{ end }}
-            {{ partial "back-to-top.html" . }}
+            {{ partial "components/back-to-top.html" . }}
             {{ partial "footer.html" . }}
         </div>
-        {{ partial "script.html" . }}
+        {{ partial "components/service-worker.html" . }}
+        {{ partial "third-party/script.html" . }}
     </body>
 </html>

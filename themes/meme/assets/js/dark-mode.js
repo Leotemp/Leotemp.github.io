@@ -1,98 +1,123 @@
-// Back to Previous Mode & Respect System Preferences
-// `userPrefers`, `darkModeMediaQuery`, `lightModeMediaQuery` is defined in layouts/partials/head.html
-
-if (userPrefers === "dark") {
-    changeMode("🌙", "chroma", "chroma-dark");
-} else if (userPrefers === "light") {
-    changeMode("🌞", "chroma-dark", "chroma");
-} else if (darkModeMediaQuery.matches) {
-    changeMode("🌙", "chroma", "chroma-dark");
-} else if (lightModeMediaQuery.matches) {
-    changeMode("🌞", "chroma-dark", "chroma");
-}
-
 // Reactive Dark Mode
 // https://web.dev/prefers-color-scheme/#reacting-on-dark-mode-changes
 // https://twitter.com/ChromeDevTools/status/1197175265643745282
 
-darkModeMediaQuery.addListener((e) => {
-    const darkModeOn = e.matches;
-    if (darkModeOn) {
-        changeModeMeta("dark");
-        changeMode("🌙", "chroma", "chroma-dark");
-        setMode("dark");
-    }
-});
-
-lightModeMediaQuery.addListener((e) => {
-    const lightModeOn = e.matches;
-    if (lightModeOn) {
-        changeModeMeta("light");
-        changeMode("🌞", "chroma-dark", "chroma");
-        setMode("light");
-    }
-});
-
-// Mode Switcher
-// https://derekkedziora.com/blog/dark-mode
-
-function modeSwitcher() {
-    const currentMode = document.documentElement.getAttribute('data-theme');
-    if (currentMode === "dark") {
-        changeModeMeta("light");
-        changeMode("🌞", "chroma-dark", "chroma");
-        setMode("light");
-    } else {
-        changeModeMeta("dark");
-        changeMode("🌙", "chroma", "chroma-dark");
-        setMode("dark");
-    }
+const userPrefers = localStorage.getItem('theme');
+if (userPrefers === 'dark') {
+    changeModeMeta('dark');
+} else if (userPrefers === 'light') {
+    changeModeMeta('light');
 }
+
+window.matchMedia('(prefers-color-scheme: dark)').addListener((e) => {
+    changeMode();
+});
+
+window.addEventListener("DOMContentLoaded", event => {
+    // Update meta tags and code highlighting
+    changeMode();
+
+    // Theme Switcher
+    // https://derekkedziora.com/blog/dark-mode
+
+    const themeSwitcher = document.getElementById('theme-switcher');
+
+    if (themeSwitcher) {
+        themeSwitcher.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (getCurrentTheme() == "dark") {
+                changeModeMeta('light');
+            } else {
+                changeModeMeta('dark');
+            }
+            changeMode();
+            storePrefers();
+        });
+    }
+}, {once: true});
 
 // Sync Across Tabs
 // https://codepen.io/tevko/pen/GgWYpg
 
 window.addEventListener('storage', function (event) {
-    if (event.newValue === "dark") {
-        changeModeMeta("dark");
-        changeMode("🌙", "chroma", "chroma-dark");
-    } else {
-        changeModeMeta("light");
-        changeMode("🌞", "chroma-dark", "chroma");
+    if (event.key !== 'theme') {
+      return;
     }
+
+    if (event.newValue === 'dark') {
+        changeModeMeta('dark');
+    } else {
+        changeModeMeta('light');
+    }
+    changeMode();
 });
 
 // Functions
 
+function getCurrentTheme() {
+    return JSON.parse(window.getComputedStyle(document.documentElement, null).getPropertyValue("--theme-name"));
+}
+
+function changeModeMeta(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+}
+
 function changeMode() {
-    document.getElementById("theme-toggle").innerHTML = arguments[0];
+    const isDark = getCurrentTheme() === 'dark';
 
-    var els = [].slice.apply(document.getElementsByClassName(arguments[1]));
-    for (var i = 0; i < els.length; i++) {
-        els[i].className = arguments[2];
-    }
+    // Change theme color meta
+    const themeColor = isDark ? '{{ .Site.Params.themeColorDark }}' : '{{ .Site.Params.themeColor }}';
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', themeColor);
 
-    // Utterances
-    // https://github.com/utterance/utterances/issues/229
     {{ if and .Site.Params.enableUtterances (eq hugo.Environment "production") }}
-        if (arguments[0] === "🌙") {
-            changeUtterancesTheme("{{ .Site.Params.utterancesThemeDark }}");
+        // Change Utterances Comments Theme
+        // https://github.com/utterance/utterances/issues/229
+        if (isDark) {
+            changeUtterancesTheme('{{ .Site.Params.utterancesThemeDark | default "photon-dark" }}');
         } else {
-            changeUtterancesTheme("{{ .Site.Params.utterancesTheme }}");
+            changeUtterancesTheme('{{ .Site.Params.utterancesTheme | default "github-light" }}');
         }
-        function changeUtterancesTheme() {
+        function changeUtterancesTheme(theme) {
             const iframe = document.querySelector('.utterances-frame');
             if (iframe !== null) {
                 const message = {
                     type: 'set-theme',
-                    theme: arguments[0]
+                    theme: theme
                 };
                 iframe.contentWindow.postMessage(message, 'https://utteranc.es');
             }
         }
     {{ end }}
+
+    // Mermaid
+    // https://github.com/reuixiy/hugo-theme-meme/issues/205
+    if (typeof mermaidConfig !== 'undefined') {
+        const mermaids = document.querySelectorAll('.mermaid');
+
+        mermaids.forEach(e => {
+            if (e.getAttribute('data-processed')) {
+                // Already rendered, clean the processed attributes
+                e.removeAttribute('data-processed');
+                // Replace the rendered HTML with the stored text
+                e.innerHTML = e.getAttribute('data-graph');
+            } else {
+                // First time, store the text
+                e.setAttribute('data-graph', e.textContent);
+            }
+        });
+
+        if (isDark) {
+            mermaidConfig.theme = '{{ .Site.Params.mermaidThemeDark | default "dark" }}';
+            mermaid.initialize(mermaidConfig);
+            mermaid.init();
+        } else {
+            mermaidConfig.theme = '{{ .Site.Params.mermaidTheme | default "default" }}';
+            mermaid.initialize(mermaidConfig);
+            mermaid.init();
+        }
+    }
 }
 
-function setMode() {
-    window.localStorage.setItem('theme', arguments[0]);
+function storePrefers() {
+    window.localStorage.setItem('theme', getCurrentTheme());
 }
