@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">九月</title>
     <subtitle type="html">一个分享生活与科研的个人博客</subtitle>
-    <updated>2021-03-10T14:46:16+08:00</updated>
+    <updated>2021-03-10T15:01:05+08:00</updated>
     <id>https://tmliang.github.io/</id>
     <link rel="alternate" type="text/html" href="https://tmliang.github.io/" />
     <link rel="self" type="application/atom+xml" href="https://tmliang.github.io/atom.xml" />
@@ -78,7 +78,7 @@
             <title type="text">基于远程监督的关系抽取研究现状</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
             <id>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
-            <updated>2021-03-10T12:22:32+08:00</updated>
+            <updated>2021-03-10T15:00:38+08:00</updated>
             <published>2020-02-09T18:25:58+00:00</published>
             <author>
                     <name>tmliang</name>
@@ -127,6 +127,14 @@
             
             
                 
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://tmliang.github.io/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" term="关系抽取" label="关系抽取" />
+                            
+                        
                     
                 
             
