@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">九月</title>
     <subtitle type="html">记录我的科研生活</subtitle>
-    <updated>2021-03-10T17:29:10&#43;08:00</updated>
+    <updated>2021-03-10T17:36:16&#43;08:00</updated>
     <id>https://tmliang.github.io/</id>
     <link rel="alternate" type="text/html" href="https://tmliang.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://tmliang.github.io/atom.xml" />
@@ -17,10 +17,88 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.81.0">Hugo</generator>
         <entry>
+            <title type="text">An Improved Baseline for Sentence-level Relation Extraction</title>
+            <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/" />
+            <id>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</id>
+            <updated>2021-03-10T17:36:03&#43;08:00</updated>
+            <published>2021-03-10T13:07:52&#43;08:00</published>
+            <author>
+                    <name>Liang Tianming</name>
+                    <uri>https://tmliang.github.io</uri>
+                    <email>tm.liang@outlook.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">An Improved Baseline for Sentence-level Relation Extraction (Arxiv-2021) [paper] 本文聚焦于当前关系抽取实践中两个非常重要却经常被忽视的部分: 实体的……</summary>
+            
+                <content type="html">&lt;p&gt;&lt;strong&gt;An Improved Baseline for Sentence-level Relation Extraction (Arxiv-2021)&lt;/strong&gt; &lt;a href=&#34;https://arxiv.org/abs/2102.01373&#34;&gt;[paper]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文聚焦于当前关系抽取实践中两个非常重要却经常被忽视的部分: &lt;strong&gt;实体的表示方式&lt;/strong&gt;和&lt;strong&gt;NA类的处理&lt;/strong&gt;. 通篇语言流畅, 而且叙述结构非常清晰, 个人认为是今年最好的一篇关系抽取文章.&lt;/p&gt;
+&lt;h3 id=&#34;entity-representation&#34;&gt;Entity Representation&lt;/h3&gt;
+&lt;p&gt;替换实体对的方式:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Entity Mask&lt;/strong&gt;: [SUBJ-类型名], [OBJ-类型名]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Entity Marker&lt;/strong&gt;: [E1]头实体[/E1], [E2]尾实体[/E2]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Entity Marker(punct)&lt;/strong&gt;: @头实体@, #尾实体#&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type Entity Marker&lt;/strong&gt;: [E1-类型名]头实体[/E1-类型名], [E2-类型名]尾实体[/E2-类型名]&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Type Entity Marker(punct)&lt;/strong&gt;: @*类型名*头实体@, #^类型名^尾实体#&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;实验表明后两种表现最好.&lt;/p&gt;
+&lt;p&gt;下面是作者关于训练时是否应该掩盖实体名的分析:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;有人认为训练时不掩盖实体名, 会导致测试集的标签泄漏, 而且无法扩展到新实体. 但我认为, 实体名提供了重要的实体信息, 而且, 如果实体名不能使用, 那么那些基于外部三元组知识的方法也不该使用, 因为他们同样泄露了目标实体的信息.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;为了证实自己的观点, 作者将测试集中包含训练实体的句子过滤掉, 最终结果表明, 非mask的仍然优于mask.&lt;/p&gt;
+&lt;h3 id=&#34;confidence-based-classification&#34;&gt;Confidence-based Classification&lt;/h3&gt;
+&lt;p&gt;作者认为, 不应该将NA视作关系分类中的一个独立类别, 因为NA中包含着无数种不同语义的实例, 很难由一个类别建模.&lt;/p&gt;
+&lt;p&gt;本方法设立阈值进行分类, 若预测分数低于阈值, 则被视作NA. 类似于Openset Classification和Out-of-distribution Detection.&lt;/p&gt;
+&lt;p&gt;Loss的设计:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;NA类具有极低的置信度&lt;/li&gt;
+&lt;li&gt;正关系具有极高的置信度&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;2可以通过Cross Entropy实现. 但对于1, 直接降低置信度是很难优化的, 因为最大预测概率所对应的关系也会被更新, 因此, 提出了最小化NA类的置信度代理:&lt;/p&gt;
+&lt;div&gt;
+$$\begin{aligned}
+    c_{\text {sup }} &amp;=\sum_{r \in \mathcal{R}} \boldsymbol{p}_{r}^{2} \\
+    \mathcal{L}_{\text {conf }} &amp;=\log \left(1-c_{\text {sup }}\right)
+\end{aligned}$$
+&lt;/div&gt;
+&lt;p&gt;由计算可知, 置信度$c=\max_{r\in R}p_{r}\leq C_{\text{sup }}$, 最小化$\mathcal{L}_{\text {conf }}$相当于最小化$c$, 使得训练更稳定.&lt;/p&gt;
+&lt;p&gt;对关系$r$的logit值$l_r$求导:&lt;/p&gt;
+&lt;div&gt;
+$$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}\left(\boldsymbol{p}_{r}-\sum_{r \in \mathcal{R}} \boldsymbol{p}_{r}^{2}\right)}{1-\sum_{r \in \mathcal{R}} \boldsymbol{p}_{r}^{2}}$$
+&lt;/div&gt;
+&lt;p&gt;由此可知:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;当$\boldsymbol{p}_{r}=\frac{1}{\mid \mathcal{R}]}$, $\forall r \in \mathcal{R}$, $\mathcal{L}_{\text {conf }}$最小, 即此时各关系为均匀分布.&lt;/li&gt;
+&lt;li&gt;训练实例的$\mathcal{L}_{\text {conf }}$惩罚为$\frac{1}{1-\sum_{r \in \mathcal{R}} \boldsymbol{p}_{r}^{2}}$, 因此置信度高的实例会受到更多惩罚.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;最终, 结合&lt;strong&gt;Type Entity Marker(punct)&lt;strong&gt;和&lt;/strong&gt;Confidence-based Classification&lt;/strong&gt;的方法在TACRED和SemEval 2010 Task 8上都取得了SOTA结果.&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://tmliang.github.io/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" term="关系抽取" label="关系抽取" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">基于远程监督的关系抽取研究现状</title>
-            <link rel="alternate" type="text/html" href="https://tmliang.github.io/course/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
-            <id>https://tmliang.github.io/course/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
-            <updated>2021-03-10T17:28:54&#43;08:00</updated>
+            <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
+            <id>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
+            <updated>2021-03-10T17:31:26&#43;08:00</updated>
             <published>2020-02-09T18:25:58&#43;00:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -57,6 +135,14 @@
                 
                     
                 
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://tmliang.github.io/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" term="关系抽取" label="关系抽取" />
+                            
+                        
                     
                 
             
