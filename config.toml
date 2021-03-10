@@ -567,7 +567,7 @@ uglyURLs = false
     disqusShortname = ""
 
     ## Valine
-    enableValine = true
+    enableValine = false
     valineAppId = "7rOfx40BxP8M0xrCRU0wRiFm-gzGzoHsz"
     valineAppKey = "IdDi7wVxGYplbkzkXJTCEoEf"
     valinePlaceholder = "欢迎讨论"
@@ -587,7 +587,7 @@ uglyURLs = false
 
     ## Utterances
     enableUtterances = true
-    utterancesRepo = "tmliang/blog_comments"
+    utterancesRepo = "tmliang/tmliang.github.io"
     utterancesIssueTerm = "pathname"
     utterancesTheme = "github-light"
     utterancesThemeDark = "photon-dark"
