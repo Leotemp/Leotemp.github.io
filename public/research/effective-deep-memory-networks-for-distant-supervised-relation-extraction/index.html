@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.81.0" /><meta name="theme-color" content="#fff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>Effective Deep Memory Networks for Distant Supervised Relation Extraction | 九月</title>
+
+    <link rel="stylesheet" href="/css/meme.min.8fefb1f90999e7cdab2570a15206676428c5447d5b22962749349fbb7d3e7728.css"/>
+
+    
+    
+        <script src="/js/meme.min.4d5bfea4092b8806c092f5955caee1dd7d271b29e48e4961a97a6c3c763d15b0.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" /></noscript>
+
+    <meta name="author" content="Liang Tianming" /><meta name="description" content="Effective Deep Memory Networks for Distant Supervised Relation Extraction (IJCAI-2017) [paper] 本文的出发点很好, 考虑到了句子中不同词的重要性和关系标签之间的……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="九月" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="九月" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2020-03-11T22:39:40+08:00",
+        "dateModified": "2021-03-12T00:11:16+08:00",
+        "url": "https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/",
+        "headline": "Effective Deep Memory Networks for Distant Supervised Relation Extraction",
+        "description": "Effective Deep Memory Networks for Distant Supervised Relation Extraction (IJCAI-2017) [paper] 本文的出发点很好, 考虑到了句子中不同词的重要性和关系标签之间的……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "research",
+        "wordCount":  725 ,
+        "image": ["https://tmliang.github.io/images/feng2019effective.png"],
+        "author": {
+            "@type": "Person",
+            "description": "远方除了遥远, 一无所有",
+            "email": "tm.liang@outlook.com",
+            "image": "https://tmliang.github.io/icons/apple-touch-icon.png",
+            "url": "https://tmliang.github.io",
+            "name": "Liang Tianming"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "九月",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://tmliang.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://tmliang.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://tmliang.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+
+    
+
+
+
+<meta property="og:title" content="Effective Deep Memory Networks for Distant Supervised Relation Extraction" />
+<meta property="og:description" content="Effective Deep Memory Networks for Distant Supervised Relation Extraction (IJCAI-2017) [paper] 本文的出发点很好, 考虑到了句子中不同词的重要性和关系标签之间的……" />
+<meta property="og:url" content="https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" />
+<meta property="og:site_name" content="九月" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/feng2019effective.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2020-03-11T22:39:40&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-12T00:11:16&#43;08:00" />
+    
+    <meta property="article:section" content="research" />
+
+
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            
+    <div class="site-brand">
+        
+            <a href="/" class="brand">九月</a>
+        
+    </div>
+
+        
+    </header>
+
+
+
+
+            
+                
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+    </ul>
+</nav>
+
+                
+                
+                <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="research" data-toc-num="true">
+
+            <h1 class="post-title p-name">Effective Deep Memory Networks for Distant Supervised Relation Extraction</h1>
+
+            <div class="post-subtitle p-name">IJCAI-2017</div>
+            
+
+            
+                
+            
+
+            
+
+            <div class="post-body e-content">
+              <p><strong>Effective Deep Memory Networks for Distant Supervised Relation Extraction (IJCAI-2017)</strong> <a href="https://www.ijcai.org/Proceedings/2017/0559.pdf" target="_blank" rel="noopener">[paper]</a></p>
+<p>本文的出发点很好, 考虑到了句子中不同词的重要性和关系标签之间的依赖两点. 但是就模型架构而言, 与其说是Memory Networks, 不如说更像是多层的注意力网络. 考虑到文章发表时Transformers还没有大行其道 (虽然注意力机制已经非常流行), 本文还是比较有创新性的.</p>
+<h3 id="motivation"><a href="#motivation" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Motivation</h3>
+<ol>
+<li>句子中不同的词对于目标实体对的重要性是不同的</li>
+<li>不同关系之间的依赖(如包含, 冲突等), 对于某些隐式关系的推断很有帮助</li>
+</ol>
+<h3 id="method"><a href="#method" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Method</h3>
+<p><img src="/images/feng2019effective.png" alt="模型框架图"></p>
+<p>模型主要分为三块:</p>
+<ol>
+<li>
+<p>词级别</p>
+<p>在左下角模块里, 使用多层注意力模块来融合上下文信息, 即<strong>Motivation 1</strong>.
+在第一层里, 以实体对作为输入, 然后计算<strong>每个词</strong>对<strong>该实体对</strong>的注意力加权和, 作为该层的输出.
+此后每层均以上一层的输出作为输入, 然后输出该层中上下文单词的注意力加权和.</p>
+<p>最终, 将注意力模块的输出与CNN编码的句子向量拼接, 构成了本模型的句子向量.</p>
+<p>文中4.4实验部分表明, 层数为6时模型表现最佳.</p>
+</li>
+<li>
+<p>句子级别</p>
+<p>在右下角模块里, 包含了两层不同的注意力模块.</p>
+<ul>
+<li>在第一层中, 计算<strong>每条句子</strong>对<strong>该关系</strong>的注意力加权和, 作为该层的输出. 即DSRE里最常见的Selective Attention.</li>
+<li>在第二层中, 计算<strong>其他关系</strong>对<strong>该关系</strong>的注意力加权和, 可看作关系之间的自注意力,即<strong>Motivation 2</strong>.</li>
+</ul>
+<p>最终为每个关系输出一个向量表示.</p>
+</li>
+<li>
+<p>分类器</p>
+<p>由于是multi-label classification, 因此分别对每个关系向量进行sigmoid分类.</p>
+</li>
+</ol>
+<h3 id="experiment"><a href="#experiment" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Experiment</h3>
+<p>实验在过滤版NYT数据集上进行, 结果没有想象中好, 只比PCNN+ATT好了一丢丢, 但是模型复杂度却要高很多. 虽然Motivation很好, 但是这种简单的注意力模块并没有把Motivation完全挖掘出来. 个人感觉这个Motivation, 包括Memory Networks和关系依赖, 都还有很大的挖掘空间.</p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://tmliang.github.io" class="p-author h-card" target="_blank" rel="noopener">Liang Tianming</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" target="_blank" rel="noopener">https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/</a></li>
+            
+            <li class="copyright-item license"><span class="copyright-item-text">许可</span>：<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></li>
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+    <footer class="minimal-footer">
+        
+            <div class="post-tag"><a href="/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" rel="tag" class="post-tag-link">#关系抽取</a> <a href="/tags/%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3/" rel="tag" class="post-tag-link">#远程监督</a> <a href="/tags/%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C/" rel="tag" class="post-tag-link">#记忆网络</a></div>
+        
+        
+        
+            
+        
+    </footer>
+
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+                <li class="post-nav-prev">
+                    <a href="/research/an-improved-baseline-for-sentence-level-relation-extraction/" rel="prev">&lt; An Improved Baseline for Sentence-level Relation Extraction</a>
+                </li>
+            
+            
+                <li class="post-nav-next">
+                    <a href="/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" rel="next">基于远程监督的关系抽取研究现状 &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        <div class="load-comments">
+            <div id="load-comments">加载评论</div>
+        </div>
+
+        
+
+        
+
+        
+            <div id="utterances"></div>
+        
+
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+
+
+
+
+
+
+    
+
+        
+
+        
+
+        
+            <script>
+    function loadComments() {
+        (function() {
+            var utterances = document.getElementById("utterances");
+            var script = document.createElement('script');
+            script.src = 'https://utteranc.es/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('repo', 'tmliang\/blog_comments');
+            script.setAttribute('issue-term', 'pathname');
+            const isDark = getCurrentTheme() === 'dark';
+        if (isDark) {
+            script.setAttribute('theme', 'photon-dark');
+        } else {
+            script.setAttribute('theme', 'github-light');
+        }
+            
+            utterances.appendChild(script);
+        })();
+    }
+</script>
+        
+
+    
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+
+    </body>
+</html>
