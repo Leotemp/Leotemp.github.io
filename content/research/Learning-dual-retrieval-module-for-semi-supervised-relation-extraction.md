@@ -1,5 +1,5 @@
 ---
-title: "Learning Dual Retrieval Module for Semi Supervised Relation Extraction"
+title: "Learning Dual Retrieval Module for Semi-Supervised Relation Extraction"
 subtitle: "WWW-2019"
 date: 2021-03-12T20:34:50+08:00
 tags: ["关系抽取", "半监督学习"]
