@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.81.0" /><meta name="theme-color" content="#fff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>Learning Dual Retrieval Module for Semi Supervised Relation Extraction | 九月</title>
+
+    <link rel="stylesheet" href="/css/meme.min.8fefb1f90999e7cdab2570a15206676428c5447d5b22962749349fbb7d3e7728.css"/>
+
+    
+    
+        <script src="/js/meme.min.4d5bfea4092b8806c092f5955caee1dd7d271b29e48e4961a97a6c3c763d15b0.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" /></noscript>
+
+    <meta name="author" content="Liang Tianming" /><meta name="description" content="Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019) [paper] [code] 本文将关系抽取和句子检索视为对偶问题, 通过两者的相互迭代促进……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="九月" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="九月" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2021-03-12T20:34:50+08:00",
+        "dateModified": "2021-03-12T22:52:01+08:00",
+        "url": "https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/",
+        "headline": "Learning Dual Retrieval Module for Semi Supervised Relation Extraction",
+        "description": "Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019) [paper] [code] 本文将关系抽取和句子检索视为对偶问题, 通过两者的相互迭代促进……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "research",
+        "wordCount":  1621 ,
+        "image": ["https://tmliang.github.io/images/lin2019learning.png"],
+        "author": {
+            "@type": "Person",
+            "description": "远方除了遥远, 一无所有",
+            "email": "tm.liang@outlook.com",
+            "image": "https://tmliang.github.io/icons/apple-touch-icon.png",
+            "url": "https://tmliang.github.io",
+            "name": "Liang Tianming"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "九月",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://tmliang.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://tmliang.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://tmliang.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+
+    
+
+
+
+<meta property="og:title" content="Learning Dual Retrieval Module for Semi Supervised Relation Extraction" />
+<meta property="og:description" content="Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019) [paper] [code] 本文将关系抽取和句子检索视为对偶问题, 通过两者的相互迭代促进……" />
+<meta property="og:url" content="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
+<meta property="og:site_name" content="九月" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/lin2019learning.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2021-03-12T20:34:50&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-12T22:52:01&#43;08:00" />
+    
+    <meta property="article:section" content="research" />
+
+
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            
+    <div class="site-brand">
+        
+            <a href="/" class="brand">九月</a>
+        
+    </div>
+
+        
+    </header>
+
+
+
+
+            
+                
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+    </ul>
+</nav>
+
+                
+                
+                <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="research" data-toc-num="true">
+
+            <h1 class="post-title p-name">Learning Dual Retrieval Module for Semi Supervised Relation Extraction</h1>
+
+            <div class="post-subtitle p-name">WWW-2019</div>
+            
+
+            
+                
+            
+
+            
+
+            <div class="post-body e-content">
+              <p><strong>Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019)</strong> <a href="https://dl.acm.org/doi/abs/10.1145/3308558.3313573" target="_blank" rel="noopener">[paper]</a> <a href="https://github.com/INK-USC/DualRE" target="_blank" rel="noopener">[code]</a></p>
+<p>本文将<strong>关系抽取</strong>和<strong>句子检索</strong>视为对偶问题, 通过两者的相互迭代促进, 弥补了self-ensemble和self-training的不足, 在半监督关系抽取上的表现有了明显的提升.
+本文行文流畅、创新性强、推导合理、实验充分, 绝对是近年来关系抽取领域中的一篇佳作.</p>
+<h3 id="motivation"><a href="#motivation" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Motivation</h3>
+<p>常见的半监督关系抽取方法有两种</p>
+<ol>
+<li>
+<p><strong>self-ensembling method</strong>: 多个模型对无监督样本进行预测, 当大多数模型给出相同的判断时, 为该样本分配该标签</p>
+<p>该方法的缺点是不能迭代地增加训练样本, 而少量的有标签样本不足以训练多个模型.</p>
+</li>
+<li>
+<p><strong>self-training method</strong>: 在每步迭代中, 找出高置信度的样本加入训练集中, 然后用扩大后的训练集继续训练模型</p>
+<p>该方法的缺点是随着伪标签样本的不断加入, 会逐渐发生语义漂移.</p>
+</li>
+</ol>
+<p>本文将<strong>关系抽取</strong>和<strong>句子检索</strong>视为对偶问题. 前者是输入句子, 输出关系标签; 后者是输入关系标签, 输出按照与该标签的相关性排序的句子列表.
+本文提出的方法可以看作以上两者的相互融合和相互弥补, 使用一个关系抽取模型和一个检索模型来投票表决, 并将选中样本的交集加入到下一轮的训练.</p>
+<h3 id="method"><a href="#method" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Method</h3>
+<p><img src="/images/lin2019learning.png" alt="模型框架图"></p>
+<p>本框架通过EM算法对两个模型进行迭代更新.</p>
+<p>首先使用有标签训练集$L$对关系抽取模型$P_\theta$和检索模型$Q_\phi$进行预训练, 然后迭代进行以下EM步骤:</p>
+<ul>
+<li>
+<p><strong>挑选样本</strong>: 使用$P_\theta$和$Q_\phi$分别选出高置信度的无标签样本, 然后取其交集$L'$. 将$L'$从无标签集合$U$中移除, 并加入到训练集$L$中</p>
+</li>
+<li>
+<p><strong>E步</strong>: 使用$L$训练$P_\theta$, 定义损失为cross entropy</p>
+</li>
+<li>
+<p><strong>M步</strong>: 使用$L$训练$Q_\phi$, 定义损失为排序学习中的point-wise loss (最大化正例分数, 最小化负例分数)和pair-wise loss (最大化正负例之间的差距)</p>
+</li>
+</ul>
+<h3 id="details"><a href="#details" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Details</h3>
+<p>虽然算法过程看似简单, 但作者进行了非常有意思的分析和推导. 这些细节也是这篇文章的主要亮点.</p>
+<ol>
+<li>
+<p>样本的选择:</p>
+<p>在最初的想法中, 作者是想只用检索模型来挑选样本, 但是这样挑选的样本是有偏的.</p>
+<div>
+$$\mathbb{E}_{p_{\theta}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]=\mathbb{E}_{p_{\theta}(y \mid x)}\left[\frac{\nabla_{\theta} p_{\theta}(y \mid x)}{p_{\theta}(y \mid x)}\right]=\sum \nabla_{\theta} p_{\theta}(y \mid x)=\nabla_{\theta} \sum p_{\theta}(y \mid x)=\nabla_{\theta} 1=0
+$$
+</div>
+<p>由以上推导可得, $\mathbb{E}_{p_{\theta}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]$和$\mathbb{E}_{q_{\phi}(x \mid y)}\left[\nabla_{\phi} \log q_{\phi}(x \mid y)\right]$都是$0$. 因此, $\mathbb{E}_{x \in U, y \sim q_{\phi}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]=\mathbb{E}_{x \in U, y \sim (q_{\phi}(y \mid x) + p_\theta(y \mid x))}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]$. 即, 只用检索模型挑选样本和两个模型一起用, 优化目标是相同的.</p>
+</li>
+<li>
+<p>样本权重</p>
+<p>考虑到伪标签样本和真实标签样本混合的话, 其中的错误标签可能会误导模型, 因此为伪标签样本设置样本权重.
+关系抽取模型和检索模型所挑选样本的权重分别为$p_\theta(y\mid x)^\alpha$和$q_\phi(x\mid y)^\beta$.</p>
+</li>
+</ol>
+<h3 id="experiments"><a href="#experiments" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Experiments</h3>
+<p>作者在<strong>SemEval</strong>和<strong>TACRED</strong>上进行了多组实验, 实验结果分析如下:</p>
+<ol>
+<li>
+<p>编码器
+测试了LSTM、PCNN和PRNN三种编码器, 其中PRNN性能最佳, 因此以PRNN作为后续实验的编码器.</p>
+</li>
+<li>
+<p>半监督方法
+测试了Mean-Teacher (Self-Ensemble)、Self-Training和RE-Ensemble (把本框架中的检索模型替换成关系抽取模型, 即两个关系抽取模型的集成方法)三种半监督的Baselines, 结果一致表明: 本方法 &gt; RE-Ensemble &gt; Self-Training &gt; Mean-Teacher.</p>
+</li>
+<li>
+<p>排序损失
+测试了Point-Wise和Pair-Wise两种检索模型的性能, Point-Wise的结果稍好.</p>
+</li>
+<li>
+<p>数据量
+有标签数据集越大越好, 无标签数据集不一定越大越好.</p>
+</li>
+<li>
+<p>样本权重
+$\alpha=0.5$, $\beta=2$时表现最好, $\alpha=0$, $\beta=$ (即不设置样本权重)时最差.</p>
+</li>
+<li>
+<p>关系选择
+使用检索模型挑选样本时, 如何选择哪些关系进行输入?
+一种方式是直接使用训练集$L$中的关系分布进行采样.
+另一种方式是在关系抽取模型所挑选的高置信度样本中, 选择置信度最高的$n$种关系.</p>
+<p>实验表明$n=3$时最好.</p>
+</li>
+<li>
+<p>挑选样本的质量
+测试了每轮迭代后模型的表现, 发现随着伪标签样本的加入, Precision不断下降, 而F1-Scores不断上升, 说明了所挑选的样本虽然会带来准确率的下降, 但是召回上升更快, 其质量还是过关的.</p>
+</li>
+</ol>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://tmliang.github.io" class="p-author h-card" target="_blank" rel="noopener">Liang Tianming</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" target="_blank" rel="noopener">https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</a></li>
+            
+            <li class="copyright-item license"><span class="copyright-item-text">许可</span>：<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></li>
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+    <footer class="minimal-footer">
+        
+            <div class="post-tag"><a href="/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/" rel="tag" class="post-tag-link">#关系抽取</a> <a href="/tags/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/" rel="tag" class="post-tag-link">#半监督学习</a></div>
+        
+        
+        
+            
+        
+    </footer>
+
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/research/an-improved-baseline-for-sentence-level-relation-extraction/" rel="next">An Improved Baseline for Sentence-level Relation Extraction &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        <div class="load-comments">
+            <div id="load-comments">加载评论</div>
+        </div>
+
+        
+
+        
+
+        
+            <div id="utterances"></div>
+        
+
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous" />
+<script>
+    if (typeof renderMathInElement === 'undefined') {
+        var getScript = (options) => {
+            var script = document.createElement('script');
+            script.defer = true;
+            script.crossOrigin = 'anonymous';
+            Object.keys(options).forEach((key) => {
+                script[key] = options[key];
+            });
+            document.body.appendChild(script);
+        };
+        getScript({
+            src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js',
+            integrity: 'sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4',
+            onload: () => {
+                getScript({
+                    src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/mhchem.min.js',
+                    integrity: 'sha384-5gCAXJ0ZgozlShOzzT0OWArn7yCPGWVIvgo+BAd8NUKbCmulrJiQuCVR9cHlPHeG',
+                    onload: () => {
+                        getScript({
+                            src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js',
+                            integrity: 'sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa',
+                            onload: () => {
+                                renderKaTex();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        renderKaTex();
+    }
+    function renderKaTex() {
+        renderMathInElement(
+            document.body,
+            {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            }
+        );
+    }
+</script>
+
+
+
+
+
+
+
+
+    
+
+        
+
+        
+
+        
+            <script>
+    function loadComments() {
+        (function() {
+            var utterances = document.getElementById("utterances");
+            var script = document.createElement('script');
+            script.src = 'https://utteranc.es/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('repo', 'tmliang\/blog_comments');
+            script.setAttribute('issue-term', 'pathname');
+            const isDark = getCurrentTheme() === 'dark';
+        if (isDark) {
+            script.setAttribute('theme', 'photon-dark');
+        } else {
+            script.setAttribute('theme', 'github-light');
+        }
+            
+            utterances.appendChild(script);
+        })();
+    }
+</script>
+        
+
+    
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+
+    </body>
+</html>

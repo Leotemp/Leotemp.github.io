@@ -2,47 +2,53 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <loc>https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</loc>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/research/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/tags/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
+  </url><url>
+    <loc>https://tmliang.github.io/tags/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
+  </url><url>
+    <loc>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</loc>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/tags/%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/tags/%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3/</loc>
-    <lastmod>2021-03-11T23:52:08+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/course/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/course/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/about/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/tags/%E7%9F%A5%E8%AF%86%E8%A1%A8%E7%A4%BA/</loc>
-    <lastmod>2021-03-11T22:33:58+08:00</lastmod>
+    <lastmod>2021-03-12T22:52:01+08:00</lastmod>
   </url><url>
     <loc>https://tmliang.github.io/categories/</loc>
   </url>
