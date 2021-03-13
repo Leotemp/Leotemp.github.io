@@ -6,7 +6,7 @@ tags: ["关系抽取", "半监督学习"]
 katex: true
 ---
 
-**Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019)** [[paper]](https://dl.acm.org/doi/abs/10.1145/3308558.3313573) [[code]](https://github.com/INK-USC/DualRE)
+**Learning Dual Retrieval Module for Semi-Supervised Relation Extraction (WWW-2019)** [[paper]](https://dl.acm.org/doi/abs/10.1145/3308558.3313573) [[code]](https://github.com/INK-USC/DualRE)
 
 本文将**关系抽取**和**句子检索**视为对偶问题, 通过两者的相互迭代促进, 弥补了self-ensemble和self-training的不足, 在半监督关系抽取上的表现有了明显的提升.
 本文行文流畅、创新性强、推导合理、实验充分, 绝对是近年来关系抽取领域中的一篇佳作.
@@ -42,7 +42,7 @@ katex: true
 ### Details
 虽然算法过程看似简单, 但作者进行了非常有意思的分析和推导. 这些细节也是这篇文章的主要亮点.
 
-1. 样本的选择: 
+1. **样本的选择**: 
    
    在最初的想法中, 作者是想只用检索模型来挑选样本, 但是这样挑选的样本是有偏的. 
    
@@ -53,7 +53,7 @@ katex: true
    
    由以上推导可得, $\mathbb{E}\_{p\_{\theta}(y \mid x)}\left[\nabla\_{\theta} \log p\_{\theta}(y \mid x)\right]$和$\mathbb{E}\_{q\_{\phi}(x \mid y)}\left[\nabla\_{\phi} \log q\_{\phi}(x \mid y)\right]$都是$0$. 因此, $\mathbb{E}\_{x \in U, y \sim q\_{\phi}(y \mid x)}\left[\nabla\_{\theta} \log p\_{\theta}(y \mid x)\right]=\mathbb{E}\_{x \in U, y \sim (q\_{\phi}(y \mid x) + p\_\theta(y \mid x))}\left[\nabla\_{\theta} \log p\_{\theta}(y \mid x)\right]$. 即, 只用检索模型挑选样本和两个模型一起用, 优化目标是相同的.
 
-2. 样本权重
+2. **样本权重**
 
     考虑到伪标签样本和真实标签样本混合的话, 其中的错误标签可能会误导模型, 因此为伪标签样本设置样本权重. 
     关系抽取模型和检索模型所挑选样本的权重分别为$p\_\theta(y\mid x)^\alpha$和$q\_\phi(x\mid y)^\beta$.
@@ -62,27 +62,34 @@ katex: true
 
 作者在**SemEval**和**TACRED**上进行了多组实验, 实验结果分析如下:
 
-1. 编码器
+1. **编码器**
+   
    测试了LSTM、PCNN和PRNN三种编码器, 其中PRNN性能最佳, 因此以PRNN作为后续实验的编码器.
 
-2. 半监督方法
+2. **半监督方法**
+   
    测试了Mean-Teacher (Self-Ensemble)、Self-Training和RE-Ensemble (把本框架中的检索模型替换成关系抽取模型, 即两个关系抽取模型的集成方法)三种半监督的Baselines, 结果一致表明: 本方法 > RE-Ensemble > Self-Training > Mean-Teacher.
 
-3. 排序损失
+3. **排序损失**
+   
    测试了Point-Wise和Pair-Wise两种检索模型的性能, Point-Wise的结果稍好.
 
-4. 数据量
+4. **数据量**
+   
    有标签数据集越大越好, 无标签数据集不一定越大越好.
 
-5. 样本权重
-   $\alpha=0.5$, $\beta=2$时表现最好, $\alpha=0$, $\beta=$ (即不设置样本权重)时最差.
+5. **样本权重**
+   
+   $\alpha=0.5$, $\beta=2$时表现最好, $\alpha=0$, $\beta=0$ (即不设置样本权重)时最差.
 
-6. 关系选择
+6. **关系选择**
+   
    使用检索模型挑选样本时, 如何选择哪些关系进行输入?
    一种方式是直接使用训练集$L$中的关系分布进行采样. 
    另一种方式是在关系抽取模型所挑选的高置信度样本中, 选择置信度最高的$n$种关系.
 
    实验表明$n=3$时最好.
 
-7. 挑选样本的质量
+7. **挑选样本的质量**
+
    测试了每轮迭代后模型的表现, 发现随着伪标签样本的加入, Precision不断下降, 而F1-Scores不断上升, 说明了所挑选的样本虽然会带来准确率的下降, 但是召回上升更快, 其质量还是过关的.
