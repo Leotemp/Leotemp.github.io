@@ -23,13 +23,97 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Fri, 12 Mar 2021 22:52:43 &#43;0800</lastBuildDate>
+        <lastBuildDate>Sat, 13 Mar 2021 19:57:28 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://tmliang.github.io/rss.xml" />
         
         
             <item>
-                <title>Learning Dual Retrieval Module for Semi Supervised Relation Extraction</title>
+                <title>Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction</title>
+                <link>https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/</link>
+                <guid isPermaLink="true">https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/</guid>
+                <pubDate>Sat, 13 Mar 2021 12:50:10 &#43;0800</pubDate>
+                
+                    <author>tm.liang@outlook.com (Liang Tianming)</author>
+                
+                <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
+                
+                    <description>&lt;p&gt;&lt;strong&gt;Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction&lt;/strong&gt; &lt;a href=&#34;https://arxiv.org/abs/2010.11383&#34;&gt;[paper]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本文是针对上文的&lt;strong&gt;DualRE&lt;/strong&gt;的改进工作, 加入了一些人工特征信息, 在半监督关系抽取上取得了SOTA的结果, 但遗憾的是缺乏足够的理论分析, 实验也不够充分.&lt;/p&gt;
+&lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;DualRE&lt;/strong&gt;使用在有监督样本上预训练的模型对无标签样本进行预测, 要求有监督样本和无监督样本的分布一致.
+当两种数据之间的语义鸿沟较大时, &lt;strong&gt;DualRE&lt;/strong&gt;的性能会受到限制.&lt;/p&gt;
+&lt;p&gt;为了解决这个问题, 本文通过构造人工特征, 建立起有监督样本和无监督样本之间的联系.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;个人认为这段对DualRE的阐述比较勉强, 而且本文虽然建立起了两种数据之间的联系, 但并没有从根本上解决有/无监督样本之间的语义鸿沟.&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;model&#34;&gt;Model&lt;/h3&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/li2020exploit.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
+&lt;p&gt;模型从下到上可以分为四部分:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Input Module&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;构造三个不同的特征图, 用来连接有监督样本和无监督样本.
+这些图都是二分图, 每个节点表示一个句子, 而每条边连接一个有标注句子和一个无标注句子.
+三个图中连边的规则如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;实体参考图&lt;/strong&gt;: 如果两个句子包含相同的目标实体, 则连边&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;动词参考图&lt;/strong&gt;: 如果两个句子的目标实体对之间的动词相同, 则连边&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;语义参考图&lt;/strong&gt;: 如果两个句子向量的余弦相似度大于阈值, 则连边 (句子向量来自于Prediction Module中的Encoder)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Prediction Module&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;一个Encoder和一个Classifier, 用有监督样本进行训练, 然后对无监督样本进行分类.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Graph Update Module&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;将增强后的样本(即得到伪标签的无监督样本)作为有监督的节点, 更新上述三个图, 并且用上一步中更新后的encoder来更新句子向量.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;这里疑惑的是, 增强样本是指从Prediction Module中选出一部分高置信度的无监督样本, 还是上一轮迭代结束后得到的伪标签样本? 如果是前者的话, 是怎么选择的? 如果是后者的话, 在每轮的Input Module中不是已经将这些样本加入有监督集合了么?&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Multi GAT Module&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;本模块分为三个部分:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用3个GAT分别对3个图进行编码&lt;/li&gt;
+&lt;li&gt;通过注意力机制为每个节点计算在三个图上的注意力加权和&lt;/li&gt;
+&lt;li&gt;使用Classifier, 对无监督节点进行分类&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;最终取2和4中的分类结果的交集作为一轮迭代中选取的高置信度样本, 加入到有监督训练集中.&lt;/p&gt;
+&lt;h3 id=&#34;experiments&#34;&gt;Experiments&lt;/h3&gt;
+&lt;p&gt;在&lt;strong&gt;SemEval&lt;/strong&gt;和&lt;strong&gt;TACRED&lt;/strong&gt;上取得了SOTA的结果.&lt;/p&gt;
+&lt;p&gt;消融学习中展示了三个特征图的影响, &lt;strong&gt;动词参考图&lt;/strong&gt; &amp;gt; &lt;strong&gt;实体参考图&lt;/strong&gt; &amp;gt; &lt;strong&gt;语义参考图&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;个人感觉模型还可以进一步精简, 尤其是Prediction Module略显冗余, 这部分是不是必须的? DualRE中两个模块正好互为补充, 而本模型里Prediction Module和MGAT的联系并没有这么紧密. 遗憾的是原文并没有给出该模块的消融分析&lt;/code&gt;&lt;/p&gt;
+</description>
+                
+                
+                
+                
+                
+                    
+                        
+                    
+                        
+                            
+                                
+                                
+                                
+                                    <category domain="https://tmliang.github.io/tags/%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96/">关系抽取</category>
+                                
+                            
+                                
+                                
+                                
+                                    <category domain="https://tmliang.github.io/tags/%E5%8D%8A%E7%9B%91%E7%9D%A3%E5%AD%A6%E4%B9%A0/">半监督学习</category>
+                                
+                            
+                        
+                    
+                
+            </item>
+        
+            <item>
+                <title>Learning Dual Retrieval Module for Semi-Supervised Relation Extraction</title>
                 <link>https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</link>
                 <guid isPermaLink="true">https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</guid>
                 <pubDate>Fri, 12 Mar 2021 20:34:50 &#43;0800</pubDate>
@@ -38,7 +122,7 @@
                 
                 <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
                 
-                    <description>&lt;p&gt;&lt;strong&gt;Learning Dual Retrieval Module for Semi Supervised Relation Extraction (WWW-2019)&lt;/strong&gt; &lt;a href=&#34;https://dl.acm.org/doi/abs/10.1145/3308558.3313573&#34;&gt;[paper]&lt;/a&gt; &lt;a href=&#34;https://github.com/INK-USC/DualRE&#34;&gt;[code]&lt;/a&gt;&lt;/p&gt;
+                    <description>&lt;p&gt;&lt;strong&gt;Learning Dual Retrieval Module for Semi-Supervised Relation Extraction (WWW-2019)&lt;/strong&gt; &lt;a href=&#34;https://dl.acm.org/doi/abs/10.1145/3308558.3313573&#34;&gt;[paper]&lt;/a&gt; &lt;a href=&#34;https://github.com/INK-USC/DualRE&#34;&gt;[code]&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;本文将&lt;strong&gt;关系抽取&lt;/strong&gt;和&lt;strong&gt;句子检索&lt;/strong&gt;视为对偶问题, 通过两者的相互迭代促进, 弥补了self-ensemble和self-training的不足, 在半监督关系抽取上的表现有了明显的提升.
 本文行文流畅、创新性强、推导合理、实验充分, 绝对是近年来关系抽取领域中的一篇佳作.&lt;/p&gt;
 &lt;h3 id=&#34;motivation&#34;&gt;Motivation&lt;/h3&gt;
@@ -74,7 +158,7 @@
 &lt;p&gt;虽然算法过程看似简单, 但作者进行了非常有意思的分析和推导. 这些细节也是这篇文章的主要亮点.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;样本的选择:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;样本的选择&lt;/strong&gt;:&lt;/p&gt;
 &lt;p&gt;在最初的想法中, 作者是想只用检索模型来挑选样本, 但是这样挑选的样本是有偏的.&lt;/p&gt;
 &lt;div&gt;
 $$\mathbb{E}_{p_{\theta}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]=\mathbb{E}_{p_{\theta}(y \mid x)}\left[\frac{\nabla_{\theta} p_{\theta}(y \mid x)}{p_{\theta}(y \mid x)}\right]=\sum \nabla_{\theta} p_{\theta}(y \mid x)=\nabla_{\theta} \sum p_{\theta}(y \mid x)=\nabla_{\theta} 1=0
@@ -83,7 +167,7 @@ $$
 &lt;p&gt;由以上推导可得, $\mathbb{E}_{p_{\theta}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]$和$\mathbb{E}_{q_{\phi}(x \mid y)}\left[\nabla_{\phi} \log q_{\phi}(x \mid y)\right]$都是$0$. 因此, $\mathbb{E}_{x \in U, y \sim q_{\phi}(y \mid x)}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]=\mathbb{E}_{x \in U, y \sim (q_{\phi}(y \mid x) + p_\theta(y \mid x))}\left[\nabla_{\theta} \log p_{\theta}(y \mid x)\right]$. 即, 只用检索模型挑选样本和两个模型一起用, 优化目标是相同的.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;样本权重&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;样本权重&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;考虑到伪标签样本和真实标签样本混合的话, 其中的错误标签可能会误导模型, 因此为伪标签样本设置样本权重.
 关系抽取模型和检索模型所挑选样本的权重分别为$p_\theta(y\mid x)^\alpha$和$q_\phi(x\mid y)^\beta$.&lt;/p&gt;
 &lt;/li&gt;
@@ -92,35 +176,35 @@ $$
 &lt;p&gt;作者在&lt;strong&gt;SemEval&lt;/strong&gt;和&lt;strong&gt;TACRED&lt;/strong&gt;上进行了多组实验, 实验结果分析如下:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
-&lt;p&gt;编码器
-测试了LSTM、PCNN和PRNN三种编码器, 其中PRNN性能最佳, 因此以PRNN作为后续实验的编码器.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;编码器&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试了LSTM、PCNN和PRNN三种编码器, 其中PRNN性能最佳, 因此以PRNN作为后续实验的编码器.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;半监督方法
-测试了Mean-Teacher (Self-Ensemble)、Self-Training和RE-Ensemble (把本框架中的检索模型替换成关系抽取模型, 即两个关系抽取模型的集成方法)三种半监督的Baselines, 结果一致表明: 本方法 &amp;gt; RE-Ensemble &amp;gt; Self-Training &amp;gt; Mean-Teacher.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;半监督方法&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试了Mean-Teacher (Self-Ensemble)、Self-Training和RE-Ensemble (把本框架中的检索模型替换成关系抽取模型, 即两个关系抽取模型的集成方法)三种半监督的Baselines, 结果一致表明: 本方法 &amp;gt; RE-Ensemble &amp;gt; Self-Training &amp;gt; Mean-Teacher.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;排序损失
-测试了Point-Wise和Pair-Wise两种检索模型的性能, Point-Wise的结果稍好.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;排序损失&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试了Point-Wise和Pair-Wise两种检索模型的性能, Point-Wise的结果稍好.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;数据量
-有标签数据集越大越好, 无标签数据集不一定越大越好.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数据量&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;有标签数据集越大越好, 无标签数据集不一定越大越好.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;样本权重
-$\alpha=0.5$, $\beta=2$时表现最好, $\alpha=0$, $\beta=$ (即不设置样本权重)时最差.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;样本权重&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;$\alpha=0.5$, $\beta=2$时表现最好, $\alpha=0$, $\beta=0$ (即不设置样本权重)时最差.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;关系选择
-使用检索模型挑选样本时, 如何选择哪些关系进行输入?
+&lt;p&gt;&lt;strong&gt;关系选择&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;使用检索模型挑选样本时, 如何选择哪些关系进行输入?
 一种方式是直接使用训练集$L$中的关系分布进行采样.
 另一种方式是在关系抽取模型所挑选的高置信度样本中, 选择置信度最高的$n$种关系.&lt;/p&gt;
 &lt;p&gt;实验表明$n=3$时最好.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;挑选样本的质量
-测试了每轮迭代后模型的表现, 发现随着伪标签样本的加入, Precision不断下降, 而F1-Scores不断上升, 说明了所挑选的样本虽然会带来准确率的下降, 但是召回上升更快, 其质量还是过关的.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;挑选样本的质量&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;测试了每轮迭代后模型的表现, 发现随着伪标签样本的加入, Precision不断下降, 而F1-Scores不断上升, 说明了所挑选的样本虽然会带来准确率的下降, 但是召回上升更快, 其质量还是过关的.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
 </description>
