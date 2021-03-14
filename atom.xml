@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">九月</title>
     <subtitle type="html">记录我的科研生活</subtitle>
-    <updated>2021-03-14T23:35:37&#43;08:00</updated>
+    <updated>2021-03-14T23:40:31&#43;08:00</updated>
     <id>https://tmliang.github.io/</id>
     <link rel="alternate" type="text/html" href="https://tmliang.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://tmliang.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">Memory Networks 系列模型梳理</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" />
             <id>https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:40:08&#43;08:00</updated>
             <published>2021-03-14T10:32:06&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -85,13 +85,13 @@
 &lt;p&gt;个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;$e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)&lt;/p&gt;
+&lt;p&gt;$\mathbf{e}^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($\mathbf{e}^0_t=\mathbf{s}_t$, 其中$\mathbf{s}_t$表示第$t$条句子在Input Module中得到的嵌入)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;$m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)&lt;/p&gt;
+&lt;p&gt;$\mathbf{m}^i=\mathbf{e}^i_T$(即第$i$层最后一步的隐藏层输出)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;$q$表示输入的问题的嵌入.&lt;/p&gt;
+&lt;p&gt;$\mathbf{q}$表示输入的问题的嵌入.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;第i层第t步的门控值&lt;/strong&gt;:&lt;/p&gt;
@@ -182,7 +182,7 @@ $$
             <title type="text">Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2021-03-13T12:50:10&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -269,7 +269,7 @@ $$
             <title type="text">Learning Dual Retrieval Module for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2021-03-12T20:34:50&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -396,7 +396,7 @@ $$
             <title type="text">An Improved Baseline for Sentence-level Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/" />
             <id>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2021-03-10T13:07:52&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -474,7 +474,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Effective Deep Memory Networks for Distant Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2020-03-11T22:39:40&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -556,7 +556,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">基于远程监督的关系抽取研究现状</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
             <id>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2020-02-09T18:25:58&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -616,7 +616,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Text-Enhanced Representation Learning for Knowledge Graph</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/" />
             <id>https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/</id>
-            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <updated>2021-03-14T23:39:09&#43;08:00</updated>
             <published>2019-09-18T18:14:51&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>

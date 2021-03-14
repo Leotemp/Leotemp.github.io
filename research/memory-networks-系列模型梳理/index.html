@@ -54,13 +54,13 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2021-03-14T10:32:06+08:00",
-        "dateModified": "2021-03-14T23:35:18+08:00",
+        "dateModified": "2021-03-14T23:40:08+08:00",
         "url": "https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/",
         "headline": "Memory Networks 系列模型梳理",
         "description": "本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不……",
         "inLanguage" : "zh-CN",
         "articleSection": "research",
-        "wordCount":  3048 ,
+        "wordCount":  3111 ,
         "image": ["https://tmliang.github.io/images/2021-03-14-1.png","https://tmliang.github.io/images/2021-03-14-2.png","https://tmliang.github.io/images/2021-03-14-3.png","https://tmliang.github.io/images/2021-03-14-4.png","https://tmliang.github.io/images/2021-03-14-5.png","https://tmliang.github.io/images/2021-03-14-6.png","https://tmliang.github.io/images/2021-03-14-7.png","https://tmliang.github.io/images/2021-03-14-8.png"],
         "author": {
             "@type": "Person",
@@ -104,7 +104,7 @@
 <meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/2021-03-14-1.png" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2021-03-14T10:32:06&#43;08:00" />
-    <meta property="article:modified_time" content="2021-03-14T23:35:18&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-14T23:40:08&#43;08:00" />
     
     <meta property="article:section" content="research" />
 
@@ -231,13 +231,13 @@
 <p>个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.</p>
 <ul>
 <li>
-<p>$e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)</p>
+<p>$\mathbf{e}^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($\mathbf{e}^0_t=\mathbf{s}_t$, 其中$\mathbf{s}_t$表示第$t$条句子在Input Module中得到的嵌入)</p>
 </li>
 <li>
-<p>$m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)</p>
+<p>$\mathbf{m}^i=\mathbf{e}^i_T$(即第$i$层最后一步的隐藏层输出)</p>
 </li>
 <li>
-<p>$q$表示输入的问题的嵌入.</p>
+<p>$\mathbf{q}$表示输入的问题的嵌入.</p>
 </li>
 </ul>
 <p><strong>第i层第t步的门控值</strong>:</p>

@@ -23,7 +23,7 @@
         
             <copyright>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</copyright>
         
-        <lastBuildDate>Sun, 14 Mar 2021 23:35:37 &#43;0800</lastBuildDate>
+        <lastBuildDate>Sun, 14 Mar 2021 23:40:31 &#43;0800</lastBuildDate>
         
             <atom:link rel="self" type="application/rss&#43;xml" href="https://tmliang.github.io/rss.xml" />
         
@@ -94,13 +94,13 @@
 &lt;p&gt;个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;$e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)&lt;/p&gt;
+&lt;p&gt;$\mathbf{e}^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($\mathbf{e}^0_t=\mathbf{s}_t$, 其中$\mathbf{s}_t$表示第$t$条句子在Input Module中得到的嵌入)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;$m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)&lt;/p&gt;
+&lt;p&gt;$\mathbf{m}^i=\mathbf{e}^i_T$(即第$i$层最后一步的隐藏层输出)&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;$q$表示输入的问题的嵌入.&lt;/p&gt;
+&lt;p&gt;$\mathbf{q}$表示输入的问题的嵌入.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;第i层第t步的门控值&lt;/strong&gt;:&lt;/p&gt;
