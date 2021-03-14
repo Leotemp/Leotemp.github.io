@@ -72,11 +72,11 @@ katex: true
 
 个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.
 
-* $e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)
+* $\mathbf{e}^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($\mathbf{e}^0_t=\mathbf{s}_t$, 其中$\mathbf{s}_t$表示第$t$条句子在Input Module中得到的嵌入)
 
-* $m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)
+* $\mathbf{m}^i=\mathbf{e}^i_T$(即第$i$层最后一步的隐藏层输出)
 
-* $q$表示输入的问题的嵌入.
+* $\mathbf{q}$表示输入的问题的嵌入.
 
 **第i层第t步的门控值**: 
 
