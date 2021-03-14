@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article#">
+    <meta charset="UTF-8" />
+
+    <meta name="generator" content="Hugo 0.81.0" /><meta name="theme-color" content="#fff" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+    
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+
+    <title>Memory Networks 系列模型梳理 | 九月</title>
+
+    <link rel="stylesheet" href="/css/meme.min.8fefb1f90999e7cdab2570a15206676428c5447d5b22962749349fbb7d3e7728.css"/>
+
+    
+    
+        <script src="/js/meme.min.4d5bfea4092b8806c092f5955caee1dd7d271b29e48e4961a97a6c3c763d15b0.js"></script>
+
+    
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" media="print" onload="this.media='all'" />
+        <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=EB&#43;Garamond:400,400i,700,700i%7cNoto&#43;Serif&#43;SC:400,700%7cSource&#43;Code&#43;Pro:400,400i,700,700i%7cCinzel&#43;Decorative:700&amp;display=swap&amp;subset=chinese-simplified" /></noscript>
+
+    <meta name="author" content="Liang Tianming" /><meta name="description" content="本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不……" />
+
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#2a6df4" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="九月" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="九月" />
+    <meta name="msapplication-starturl" content="../../" />
+    <meta name="msapplication-TileColor" content="#fff" />
+    <meta name="msapplication-TileImage" content="../../icons/mstile-150x150.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    
+    
+
+    
+    <link rel="canonical" href="https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" />
+    
+
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "datePublished": "2021-03-14T10:32:06+08:00",
+        "dateModified": "2021-03-14T23:35:18+08:00",
+        "url": "https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/",
+        "headline": "Memory Networks 系列模型梳理",
+        "description": "本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不……",
+        "inLanguage" : "zh-CN",
+        "articleSection": "research",
+        "wordCount":  3048 ,
+        "image": ["https://tmliang.github.io/images/2021-03-14-1.png","https://tmliang.github.io/images/2021-03-14-2.png","https://tmliang.github.io/images/2021-03-14-3.png","https://tmliang.github.io/images/2021-03-14-4.png","https://tmliang.github.io/images/2021-03-14-5.png","https://tmliang.github.io/images/2021-03-14-6.png","https://tmliang.github.io/images/2021-03-14-7.png","https://tmliang.github.io/images/2021-03-14-8.png"],
+        "author": {
+            "@type": "Person",
+            "description": "远方除了遥远, 一无所有",
+            "email": "tm.liang@outlook.com",
+            "image": "https://tmliang.github.io/icons/apple-touch-icon.png",
+            "url": "https://tmliang.github.io",
+            "name": "Liang Tianming"
+        },
+        "license": "[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)",
+        "publisher": {
+            "@type": "Organization",
+            "name": "九月",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://tmliang.github.io/icons/apple-touch-icon.png"
+            },
+            "url": "https://tmliang.github.io/"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebSite",
+            "@id": "https://tmliang.github.io/"
+        }
+    }
+</script>
+
+    
+
+<meta name="twitter:card" content="summary_large_image" />
+
+
+
+    
+
+
+
+<meta property="og:title" content="Memory Networks 系列模型梳理" />
+<meta property="og:description" content="本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不……" />
+<meta property="og:url" content="https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" />
+<meta property="og:site_name" content="九月" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/2021-03-14-1.png" />
+<meta property="og:type" content="article" />
+    <meta property="article:published_time" content="2021-03-14T10:32:06&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-14T23:35:18&#43;08:00" />
+    
+    <meta property="article:section" content="research" />
+
+
+
+    
+</head>
+
+    <body>
+        <div class="container">
+            
+    <header class="header">
+        
+            
+    <div class="site-brand">
+        
+            <a href="/" class="brand">九月</a>
+        
+    </div>
+
+        
+    </header>
+
+
+
+
+            
+                
+                    <nav class="nav">
+    <ul class="menu" id="menu">
+        
+            
+        
+        
+        
+        
+            
+                
+            
+        
+            
+                
+            
+        
+    </ul>
+</nav>
+
+                
+                
+                <a id="theme-switcher" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-light"><path d="M193.2 104.5l48.8-97.5a18 18 0 0128 0l48.8 97.5 103.4 -34.5a18 18 0 0119.8 19.8l-34.5 103.4l97.5 48.8a18 18 0 010 28l-97.5 48.8 34.5 103.4a18 18 0 01-19.8 19.8l-103.4-34.5-48.8 97.5a18 18 0 01-28 0l-48.8-97.5l-103.4 34.5a18 18 0 01-19.8-19.8l34.5-103.4-97.5-48.8a18 18 0 010-28l97.5-48.8-34.5-103.4a18 18 0 0119.8-19.8zM256 128a128 128 0 10.01 0M256 160a96 96 0 10.01 0"/></svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon theme-icon-dark"><path d="M27 412a256 256 0 10154-407a11.5 11.5 0 00-5 20a201.5 201.5 0 01-134 374a11.5 11.5 0 00-15 13"/></svg></a>
+            
+            
+    <main class="main single" id="main">
+    <div class="main-inner">
+
+        
+
+        <article class="content post h-entry" data-align="justify" data-type="research" data-toc-num="true">
+
+            <h1 class="post-title p-name">Memory Networks 系列模型梳理</h1>
+
+            
+
+            
+                
+            
+
+            
+
+            <div class="post-body e-content">
+              <p>本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不赘述模型的具体操作步骤, 而对该系列模型的中心思想角度进行梳理.</p>
+<p>传统的神经网络模型(如CNN、RNN)等使用隐藏层来记忆所有的训练数据信息, 这种做法存在以下不足:</p>
+<ul>
+<li>多个隐藏层的堆叠, 使得输出的表示过于抽象, 难以表示原有数据的全部信息</li>
+<li>经过多次迭代更新后, 模型只能记住训练数据主要的抽象特征, 长尾数据往往会被遗忘</li>
+<li>模型的计算过程可以被设计, 但其记忆过程却不受人为控制. 训练集的偏差可能被模型认为是重要特征</li>
+</ul>
+<p>上述不足的原因都可以归咎于传统神经网络过小的记忆容量. 为此, Memory Networks被提出, 跟传统神经网络不同的是, 它使用外部的记忆单元来显式存储所需要记忆的信息, 并通过读写操作来实现对记忆单元的更新.
+<strong>传统神经网络可以看作是一块CPU, 推理运算能力极强, 却只能使用容量极小的Cache来存储信息. 而Memory Networks则是CPU搭配内存, CPU负责推理运算, 内存用于存储大规模的信息, 两者各司其职.</strong></p>
+<h3 id="memory-networks"><a href="#memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Memory Networks</h3>
+<p><strong>Memory Networks (ICLR-2015)</strong> <a href="https://arxiv.org/abs/1410.3916" target="_blank" rel="noopener">[paper]</a>
+<img src="/images/2021-03-14-1.png" alt="Memory Networks"></p>
+<p>如图, Memory Networks由一个记忆单元M和4个计算模块I、G、O、R组成.</p>
+<ul>
+<li><strong>Memory (M)</strong>: 外部记忆单元, 通过内部的N个Memory Slots (m<sub>1</sub>, ..., m<sub>N</sub>) 来存储信息 (N可以非常大)</li>
+<li><strong>Input (I)</strong>: 将输入X编码为向量形式</li>
+<li><strong>Generalization (G)</strong>: 将输入X中所需记忆的信息写入M</li>
+<li><strong>Output (O)</strong>: 根据输入X, 从M中读取所需的信息</li>
+<li><strong>Response (R)</strong>: 对O的输出进行解码, 得到模型的输出</li>
+</ul>
+<p>更为常见的形式是用于QA问答中(如下图), 其输入是一段参考文本X和一个问题q, 要求模型从X中得到q的答案.</p>
+<p><img src="/images/2021-03-14-2.png" alt="Memory Networks on QA"></p>
+<p>在之前解读的文章<a href="/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/"><strong>Effective Deep Memory Networks for Distant Supervised Relation Extraction</strong></a>中, 使用的就是这个形式的模型.
+在该模型中, 以目标实体对作为q, 以上下文单词作为X.</p>
+<h3 id="end-to-end-memory-networks"><a href="#end-to-end-memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>End-To-End Memory Networks</h3>
+<p><strong>End-To-End Memory Networks (NIPS-2015)</strong> <a href="https://dl.acm.org/doi/abs/10.5555/2969442.2969512" target="_blank" rel="noopener">[paper]</a>
+<img src="/images/2021-03-14-3.png" alt="End-To-End Memory Networks"></p>
+<p>主要介绍本模型对于前一个Memory Networks在想法上的改进:</p>
+<ol>
+<li>
+<p><strong>QKV形式的注意力机制</strong></p>
+<p>如上图(a)所示, M中通过Key-Value形式(即图中的Input和Output模块)对信息进行存储.
+使用q来查询M的输出时, 采用的就是QKV形式的注意力计算.
+按照原文的说法, 这种加权和的形式比原先的递归计算形式更利于反向传播.
+但本质上, 将m划分为key和value两个部分, key用于查询与query的相关程度, 而value则用于存储记忆内容, 两个部分各司其职, 分别负责推理与记忆, 使得模型更容易学习, 可解释性也更强.</p>
+</li>
+<li>
+<p><strong>多层记忆单元 (Multi-hop)</strong></p>
+<p>如上图(b)所示, 记忆单元从单层被扩展到多层. 通过多层的QKV计算得到最终的输出.</p>
+</li>
+</ol>
+<p>由此也可以看出, 这时候的多层QKV注意力机制已经出现了<code>Attention is all you need</code>的雏形了 (差别在于MLP、multi-head和self-attention).
+💥罗马果然不是一天建成的.</p>
+<h3 id="key-value-memory-networks"><a href="#key-value-memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Key-Value Memory Networks</h3>
+<p><strong>Key-Value Memory Networks for Directly Reading Documents (ACL-2016)</strong> <a href="https://www.aclweb.org/anthology/D16-1147.pdf" target="_blank" rel="noopener">[paper]</a>
+<img src="/images/2021-03-14-4.png" alt="Key-Value Memory Networks"></p>
+<p>其实本模型的KV Memory, 在前一个End-To-End Memory Networks中已经出现了, 只是在前一个模型中被定义为Input-Output, 而在本模型中正式命名为Key-Value.
+主要的区别在于, End-To-End Memory Networks中的key和value都来自于同样的输入, 只是经过不同的Embedding矩阵(类似于Transformer).
+而Key-Value Memory Networks是为了更加直接地引进外部知识(如文本、知识库等)而设计的, 其key和value可以根据知识形式的设计, 来自于不同的输入(最简单的例子, key表示文本标题, 而value表示文本内容).</p>
+<h3 id="dynamic-memory-networks"><a href="#dynamic-memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Dynamic Memory Networks</h3>
+<p><strong>Ask Me Anything: Dynamic Memory Networks for Natural Language Processing (JMLR-2016)</strong> <a href="http://proceedings.mlr.press/v48/kumar16.pdf" target="_blank" rel="noopener">[paper]</a></p>
+<p>本模型主要是针对End-To-End Memory Networks的改进, 之前的Memory Networks每层中的记忆值都是固定的(通过对Text进行Embedding得到, 与Question无关), 而本模型借助RNN模型的递归输出机制, 可以根据Question的不同而得到不同的记忆值, 故谓之<strong>动态记忆</strong>.</p>
+<p><img src="/images/2021-03-14-5.png" alt="Dynamic Memory Networks"></p>
+<p>个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.</p>
+<ul>
+<li>
+<p>$e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)</p>
+</li>
+<li>
+<p>$m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)</p>
+</li>
+<li>
+<p>$q$表示输入的问题的嵌入.</p>
+</li>
+</ul>
+<p><strong>第i层第t步的门控值</strong>:</p>
+<p>$$g^i_t = G(\mathbf{e}^{i-1}_t, \mathbf{m}^{i-1}, \mathbf{q})$$</p>
+<p>其中$G$为特征拼接后经过两层MLP和sigmoid归一化的门控函数</p>
+<p><strong>第i层第t步的隐藏层</strong>:
+$$\mathbf{e}^i_t = g^i_t \cdot GRU(\mathbf{e}^{i-1}_t, \mathbf{e}^i_{t-1}) + (1 - g^i_t) \cdot \mathbf{e}^i_{t-1}$$</p>
+<h3 id="recurrent-entity-networks"><a href="#recurrent-entity-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Recurrent Entity Networks</h3>
+<p><strong>Tracking the World State with Recurrent Entity Networks (ICLR-2017)</strong> <a href="https://arxiv.org/abs/1612.03969" target="_blank" rel="noopener">[paper]</a></p>
+<p>前述的所有Memory Networks, 存储的都是当前的输入, 而并没有像内存一样, 长期地记忆真实世界里的一些东西.
+而这正是Recurrent Entity Networks创新的地方, 它的每个记忆单元都对应真实世界里的一个实体, 记忆单元之间相互独立, key用于标识实体, value则用于表示实体属性.
+从某种角度上来说, 之前的Memory Networks更像是各种Seq2Seq或Attention Networks的变种, 而Recurrent Entity Networks更加贴近&quot;记忆&quot;这个概念.</p>
+<p><img src="/images/2021-03-14-6.png" alt="Recurrent Entity Networks"></p>
+<p>下边介绍如何对第$j$个记忆单元进行更新. 注意由于key只用来标识, 真正的记忆内容在value中, 因此只更新value中的内容, key自始至终都不变.</p>
+<ul>
+<li>$\mathbf{w}_j$表示第$j$个记忆单元的key</li>
+<li>$\mathbf{h}_j$表示第$j$个记忆单元的value</li>
+<li>$\mathbf{s}_t$表示第$t$条句子</li>
+</ul>
+<p>对第$j$个记忆单元的value值进行更新的步骤为:</p>
+<div>
+$$
+\begin{array}{l}
+g_{j} \leftarrow \sigma\left(\mathbf{s}_{t}^{T} \mathbf{h}_{j}+\mathbf{s}_{t}^{T} \mathbf{w}_{j}\right) \\
+\tilde{\mathbf{h}}_{j} \leftarrow \phi\left(\mathbf{U} \mathbf{h}_{j}+\mathbf{V} \mathbf{w}_{j}+\mathbf{W} \mathbf{s}_{t}\right) \\
+\mathbf{h}_{j} \leftarrow \mathbf{h}_{j}+g_{j} \odot \tilde{\mathbf{h}_{j}} \\
+\mathbf{h}_{j} \leftarrow \frac{\mathbf{h}_{j}}{\left\|\mathbf{h}_{j}\right\|}
+\end{array}
+$$
+</div>
+<h3 id="gated-end-to-end-memory-networks"><a href="#gated-end-to-end-memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Gated End-to-End Memory Networks</h3>
+<p><strong>Gated End-to-End Memory Networks (ACL-2017)</strong> <a href="https://www.aclweb.org/anthology/E17-1001" target="_blank" rel="noopener">[paper]</a>
+<img src="/images/2021-03-14-7.png" alt="Gated End-to-End Memory Networks"></p>
+<p>此论文的目的只有一个: 通过最少的步骤, 将End-To-End Memory Networks改造为动态记忆网络.
+为此, 它将多层记忆之间的传递, 改造成了门控形式.</p>
+<ul>
+<li>$\mathbf{u}^k$为第$k$层的输入表示</li>
+<li>$\mathbf{o}^k$为第$k$层记忆单元的注意力加权和</li>
+</ul>
+<p>改造前:</p>
+<p>$$\mathbf{o}^{k+1} = \mathbf{o}^{k} + \mathbf{u}^{k}$$</p>
+<p>改造后:</p>
+<div>
+$$
+\begin{aligned}
+\mathbf{T}^{k}\left(\mathbf{u}^{k}\right) &=\sigma\left(\mathbf{W}_{T}^{k} \mathbf{u}^{k}+\mathbf{b}_{T}^{k}\right) \\
+\mathbf{u}^{k+1} &=\mathbf{o}^{k} \odot \mathbf{T}^{k}\left(\mathbf{u}^{k}\right)+\mathbf{u}^{k} \odot\left(1-\mathbf{T}^{k}\left(\mathbf{u}^{k}\right)\right)
+\end{aligned}
+$$
+</div>
+<h3 id="working-memory-networks"><a href="#working-memory-networks" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Working Memory Networks</h3>
+<p><strong>Working Memory Networks: Augmenting Memory Networks with a Relational Reasoning Module (ACL-2018)</strong> <a href="https://www.aclweb.org/anthology/P18-1092/" target="_blank" rel="noopener">[paper]</a></p>
+<p>还记得上面说到End-To-End Memory Networks中已经有了Transformer的影子.
+时间来到2018年, <code>Attention is all you need</code>已经卷席了整个NLP领域.
+这篇文章将multi-head attention引入到Memory Networks中, 同样是在多层记忆处下手.</p>
+<p><img src="/images/2021-03-14-8.png" alt="Working Memory Networks"></p>
+<p>与原始的End-To-End Memory Networks中通过QKV计算得到$\mathbf{o}_i$一样, 此处以$f_t(\mathbf{o}_{i-1})$作为Q ($f_t$为MLP层, $\mathbf{o}_{0}=\mathbf{u}$) , 而每个记忆单元都有多头的K和V, 然后完全按照multi-head attention的计算过程, 得到注意力输出$\mathbf{o}_{i}$.</p>
+<p>疑惑的是这里只用到了堆叠的multi-head attention, 却没有skip-connection, 在multi-hops上不会出现梯度消失吗?</p>
+<h3 id="总结"><a href="#总结" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>总结</h3>
+<p>记忆网络可以分为静态记忆网络(<a href="#memory-networks">Memory Networks</a>, <a href="#end-to-end-memory-networks">End-To-End Memory Networks</a>, <a href="#key-value-memory-networks">Key-Value Memory Networks</a>)和动态记忆网络(<a href="#dynamic-memory-networks">Dynamic Memory Networks</a>, <a href="#recurrent-entity-networks">Recurrent Entity Networks</a>, <a href="#gated-end-to-end-memory-networks">Gated End-to-End Memory Networks</a>, <a href="#working-memory-networks">Working Memory Networks</a>).</p>
+<p>静态记忆网络的记忆单元一旦写入, 就不会进行更新, 改进点主要在于读取部分(如递归读取、注意力加权等).</p>
+<p>而动态记忆网络会随着输入的不同, 记忆单元的内容也会发生改变, 改进点主要在于对记忆单元的更新, 也就是各种门控函数的设计.</p>
+<h3 id="致谢"><a href="#致谢" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>致谢</h3>
+<p>知乎专栏: <a href="https://www.zhihu.com/column/c_129532277" target="_blank" rel="noopener">记忆网络-Memory Network</a></p>
+
+            </div>
+
+            
+    
+    
+        <ul class="post-copyright">
+            <li class="copyright-item author"><span class="copyright-item-text">作者</span>：<a href="https://tmliang.github.io" class="p-author h-card" target="_blank" rel="noopener">Liang Tianming</a></li>
+            
+                
+                
+                
+                
+                <li class="copyright-item link"><span class="copyright-item-text">链接</span>：<a href="/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" target="_blank" rel="noopener">https://tmliang.github.io/research/memory-networks-系列模型梳理/</a></li>
+            
+            <li class="copyright-item license"><span class="copyright-item-text">许可</span>：<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a></li>
+            
+        </ul>
+    
+
+
+
+        </article>
+
+        
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+
+
+        
+    <footer class="minimal-footer">
+        
+            <div class="post-tag"><a href="/tags/%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C/" rel="tag" class="post-tag-link">#记忆网络</a></div>
+        
+        
+        
+            
+        
+    </footer>
+
+
+
+        
+
+
+        
+    
+        
+        
+    
+    
+    
+    
+        <ul class="post-nav">
+            
+            
+                <li class="post-nav-next">
+                    <a href="/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/" rel="next">Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction &gt;</a>
+                </li>
+            
+        </ul>
+    
+
+
+
+        
+    
+
+        <div class="load-comments">
+            <div id="load-comments">加载评论</div>
+        </div>
+
+        
+
+        
+
+        
+            <div id="utterances"></div>
+        
+
+    
+
+
+
+    </div>
+</main>
+
+
+            
+    <div id="back-to-top" class="back-to-top">
+        <a href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="icon arrow-up"><path d="M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z"/></svg></a>
+    </div>
+
+
+            
+
+        </div>
+        
+
+        
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous" />
+<script>
+    if (typeof renderMathInElement === 'undefined') {
+        var getScript = (options) => {
+            var script = document.createElement('script');
+            script.defer = true;
+            script.crossOrigin = 'anonymous';
+            Object.keys(options).forEach((key) => {
+                script[key] = options[key];
+            });
+            document.body.appendChild(script);
+        };
+        getScript({
+            src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js',
+            integrity: 'sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4',
+            onload: () => {
+                getScript({
+                    src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/mhchem.min.js',
+                    integrity: 'sha384-5gCAXJ0ZgozlShOzzT0OWArn7yCPGWVIvgo+BAd8NUKbCmulrJiQuCVR9cHlPHeG',
+                    onload: () => {
+                        getScript({
+                            src: 'https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js',
+                            integrity: 'sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa',
+                            onload: () => {
+                                renderKaTex();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    } else {
+        renderKaTex();
+    }
+    function renderKaTex() {
+        renderMathInElement(
+            document.body,
+            {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "\\[", right: "\\]", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\(", right: "\\)", display: false}
+                ]
+            }
+        );
+    }
+</script>
+
+
+
+
+
+
+
+
+    
+
+        
+
+        
+
+        
+            <script>
+    function loadComments() {
+        (function() {
+            var utterances = document.getElementById("utterances");
+            var script = document.createElement('script');
+            script.src = 'https://utteranc.es/client.js';
+            script.async = true;
+            script.crossOrigin = 'anonymous';
+            script.setAttribute('repo', 'tmliang\/blog_comments');
+            script.setAttribute('issue-term', 'pathname');
+            const isDark = getCurrentTheme() === 'dark';
+        if (isDark) {
+            script.setAttribute('theme', 'photon-dark');
+        } else {
+            script.setAttribute('theme', 'github-light');
+        }
+            
+            utterances.appendChild(script);
+        })();
+    }
+</script>
+        
+
+    
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/instant.page@5.1.0/instantpage.min.js" type="module" defer></script>
+
+
+
+
+
+
+
+    </body>
+</html>

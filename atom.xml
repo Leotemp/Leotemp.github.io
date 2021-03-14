@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">九月</title>
     <subtitle type="html">记录我的科研生活</subtitle>
-    <updated>2021-03-13T19:57:28&#43;08:00</updated>
+    <updated>2021-03-14T23:35:37&#43;08:00</updated>
     <id>https://tmliang.github.io/</id>
     <link rel="alternate" type="text/html" href="https://tmliang.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://tmliang.github.io/atom.xml" />
@@ -17,10 +17,172 @@
     <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights>
     <generator uri="https://gohugo.io/" version="0.81.0">Hugo</generator>
         <entry>
+            <title type="text">Memory Networks 系列模型梳理</title>
+            <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" />
+            <id>https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/</id>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
+            <published>2021-03-14T10:32:06&#43;08:00</published>
+            <author>
+                    <name>Liang Tianming</name>
+                    <uri>https://tmliang.github.io</uri>
+                    <email>tm.liang@outlook.com</email>
+                    </author>
+            <rights>[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)</rights><summary type="html">本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不……</summary>
+            
+                <content type="html">&lt;p&gt;本文对Memory Networks系列文章进行总结, 为了不局限于在某个领域的应用, 不赘述模型的具体操作步骤, 而对该系列模型的中心思想角度进行梳理.&lt;/p&gt;
+&lt;p&gt;传统的神经网络模型(如CNN、RNN)等使用隐藏层来记忆所有的训练数据信息, 这种做法存在以下不足:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;多个隐藏层的堆叠, 使得输出的表示过于抽象, 难以表示原有数据的全部信息&lt;/li&gt;
+&lt;li&gt;经过多次迭代更新后, 模型只能记住训练数据主要的抽象特征, 长尾数据往往会被遗忘&lt;/li&gt;
+&lt;li&gt;模型的计算过程可以被设计, 但其记忆过程却不受人为控制. 训练集的偏差可能被模型认为是重要特征&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;上述不足的原因都可以归咎于传统神经网络过小的记忆容量. 为此, Memory Networks被提出, 跟传统神经网络不同的是, 它使用外部的记忆单元来显式存储所需要记忆的信息, 并通过读写操作来实现对记忆单元的更新.
+&lt;strong&gt;传统神经网络可以看作是一块CPU, 推理运算能力极强, 却只能使用容量极小的Cache来存储信息. 而Memory Networks则是CPU搭配内存, CPU负责推理运算, 内存用于存储大规模的信息, 两者各司其职.&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;memory-networks&#34;&gt;Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Memory Networks (ICLR-2015)&lt;/strong&gt; &lt;a href=&#34;https://arxiv.org/abs/1410.3916&#34;&gt;[paper]&lt;/a&gt;
+&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-1.png&#34; alt=&#34;Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;如图, Memory Networks由一个记忆单元M和4个计算模块I、G、O、R组成.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Memory (M)&lt;/strong&gt;: 外部记忆单元, 通过内部的N个Memory Slots (m&lt;sub&gt;1&lt;/sub&gt;, ..., m&lt;sub&gt;N&lt;/sub&gt;) 来存储信息 (N可以非常大)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Input (I)&lt;/strong&gt;: 将输入X编码为向量形式&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Generalization (G)&lt;/strong&gt;: 将输入X中所需记忆的信息写入M&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Output (O)&lt;/strong&gt;: 根据输入X, 从M中读取所需的信息&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Response (R)&lt;/strong&gt;: 对O的输出进行解码, 得到模型的输出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;更为常见的形式是用于QA问答中(如下图), 其输入是一段参考文本X和一个问题q, 要求模型从X中得到q的答案.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-2.png&#34; alt=&#34;Memory Networks on QA&#34;&gt;&lt;/p&gt;
+&lt;p&gt;在之前解读的文章&lt;a href=&#34;https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/&#34;&gt;&lt;strong&gt;Effective Deep Memory Networks for Distant Supervised Relation Extraction&lt;/strong&gt;&lt;/a&gt;中, 使用的就是这个形式的模型.
+在该模型中, 以目标实体对作为q, 以上下文单词作为X.&lt;/p&gt;
+&lt;h3 id=&#34;end-to-end-memory-networks&#34;&gt;End-To-End Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;End-To-End Memory Networks (NIPS-2015)&lt;/strong&gt; &lt;a href=&#34;https://dl.acm.org/doi/abs/10.5555/2969442.2969512&#34;&gt;[paper]&lt;/a&gt;
+&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-3.png&#34; alt=&#34;End-To-End Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;主要介绍本模型对于前一个Memory Networks在想法上的改进:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;QKV形式的注意力机制&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如上图(a)所示, M中通过Key-Value形式(即图中的Input和Output模块)对信息进行存储.
+使用q来查询M的输出时, 采用的就是QKV形式的注意力计算.
+按照原文的说法, 这种加权和的形式比原先的递归计算形式更利于反向传播.
+但本质上, 将m划分为key和value两个部分, key用于查询与query的相关程度, 而value则用于存储记忆内容, 两个部分各司其职, 分别负责推理与记忆, 使得模型更容易学习, 可解释性也更强.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;多层记忆单元 (Multi-hop)&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如上图(b)所示, 记忆单元从单层被扩展到多层. 通过多层的QKV计算得到最终的输出.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;由此也可以看出, 这时候的多层QKV注意力机制已经出现了&lt;code&gt;Attention is all you need&lt;/code&gt;的雏形了 (差别在于MLP、multi-head和self-attention).
+💥罗马果然不是一天建成的.&lt;/p&gt;
+&lt;h3 id=&#34;key-value-memory-networks&#34;&gt;Key-Value Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Key-Value Memory Networks for Directly Reading Documents (ACL-2016)&lt;/strong&gt; &lt;a href=&#34;https://www.aclweb.org/anthology/D16-1147.pdf&#34;&gt;[paper]&lt;/a&gt;
+&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-4.png&#34; alt=&#34;Key-Value Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;其实本模型的KV Memory, 在前一个End-To-End Memory Networks中已经出现了, 只是在前一个模型中被定义为Input-Output, 而在本模型中正式命名为Key-Value.
+主要的区别在于, End-To-End Memory Networks中的key和value都来自于同样的输入, 只是经过不同的Embedding矩阵(类似于Transformer).
+而Key-Value Memory Networks是为了更加直接地引进外部知识(如文本、知识库等)而设计的, 其key和value可以根据知识形式的设计, 来自于不同的输入(最简单的例子, key表示文本标题, 而value表示文本内容).&lt;/p&gt;
+&lt;h3 id=&#34;dynamic-memory-networks&#34;&gt;Dynamic Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Ask Me Anything: Dynamic Memory Networks for Natural Language Processing (JMLR-2016)&lt;/strong&gt; &lt;a href=&#34;http://proceedings.mlr.press/v48/kumar16.pdf&#34;&gt;[paper]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;本模型主要是针对End-To-End Memory Networks的改进, 之前的Memory Networks每层中的记忆值都是固定的(通过对Text进行Embedding得到, 与Question无关), 而本模型借助RNN模型的递归输出机制, 可以根据Question的不同而得到不同的记忆值, 故谓之&lt;strong&gt;动态记忆&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-5.png&#34; alt=&#34;Dynamic Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;个人感觉原文对于计算过程的描述过于繁杂(主要是公式符号与图示不一致), 下边简单介绍一下记忆模块中的计算过程. 其中最重要的记忆模块(Episodic Memory Module)可以看作是多层GRU.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$e^i_t$表示GRU的第$i$层第$t$步的隐藏层参数($e^0_t=s_t$, 其中$s_t$表示第$t$条句子在Input Module中得到的嵌入)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$m^i=e^i_T$(即第$i$层最后一步的隐藏层输出)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$q$表示输入的问题的嵌入.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;第i层第t步的门控值&lt;/strong&gt;:&lt;/p&gt;
+&lt;p&gt;$$g^i_t = G(\mathbf{e}^{i-1}_t, \mathbf{m}^{i-1}, \mathbf{q})$$&lt;/p&gt;
+&lt;p&gt;其中$G$为特征拼接后经过两层MLP和sigmoid归一化的门控函数&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第i层第t步的隐藏层&lt;/strong&gt;:
+$$\mathbf{e}^i_t = g^i_t \cdot GRU(\mathbf{e}^{i-1}_t, \mathbf{e}^i_{t-1}) + (1 - g^i_t) \cdot \mathbf{e}^i_{t-1}$$&lt;/p&gt;
+&lt;h3 id=&#34;recurrent-entity-networks&#34;&gt;Recurrent Entity Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Tracking the World State with Recurrent Entity Networks (ICLR-2017)&lt;/strong&gt; &lt;a href=&#34;https://arxiv.org/abs/1612.03969&#34;&gt;[paper]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;前述的所有Memory Networks, 存储的都是当前的输入, 而并没有像内存一样, 长期地记忆真实世界里的一些东西.
+而这正是Recurrent Entity Networks创新的地方, 它的每个记忆单元都对应真实世界里的一个实体, 记忆单元之间相互独立, key用于标识实体, value则用于表示实体属性.
+从某种角度上来说, 之前的Memory Networks更像是各种Seq2Seq或Attention Networks的变种, 而Recurrent Entity Networks更加贴近&amp;quot;记忆&amp;quot;这个概念.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-6.png&#34; alt=&#34;Recurrent Entity Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;下边介绍如何对第$j$个记忆单元进行更新. 注意由于key只用来标识, 真正的记忆内容在value中, 因此只更新value中的内容, key自始至终都不变.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mathbf{w}_j$表示第$j$个记忆单元的key&lt;/li&gt;
+&lt;li&gt;$\mathbf{h}_j$表示第$j$个记忆单元的value&lt;/li&gt;
+&lt;li&gt;$\mathbf{s}_t$表示第$t$条句子&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对第$j$个记忆单元的value值进行更新的步骤为:&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{array}{l}
+g_{j} \leftarrow \sigma\left(\mathbf{s}_{t}^{T} \mathbf{h}_{j}+\mathbf{s}_{t}^{T} \mathbf{w}_{j}\right) \\
+\tilde{\mathbf{h}}_{j} \leftarrow \phi\left(\mathbf{U} \mathbf{h}_{j}+\mathbf{V} \mathbf{w}_{j}+\mathbf{W} \mathbf{s}_{t}\right) \\
+\mathbf{h}_{j} \leftarrow \mathbf{h}_{j}+g_{j} \odot \tilde{\mathbf{h}_{j}} \\
+\mathbf{h}_{j} \leftarrow \frac{\mathbf{h}_{j}}{\left\|\mathbf{h}_{j}\right\|}
+\end{array}
+$$
+&lt;/div&gt;
+&lt;h3 id=&#34;gated-end-to-end-memory-networks&#34;&gt;Gated End-to-End Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Gated End-to-End Memory Networks (ACL-2017)&lt;/strong&gt; &lt;a href=&#34;https://www.aclweb.org/anthology/E17-1001&#34;&gt;[paper]&lt;/a&gt;
+&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-7.png&#34; alt=&#34;Gated End-to-End Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;此论文的目的只有一个: 通过最少的步骤, 将End-To-End Memory Networks改造为动态记忆网络.
+为此, 它将多层记忆之间的传递, 改造成了门控形式.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\mathbf{u}^k$为第$k$层的输入表示&lt;/li&gt;
+&lt;li&gt;$\mathbf{o}^k$为第$k$层记忆单元的注意力加权和&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;改造前:&lt;/p&gt;
+&lt;p&gt;$$\mathbf{o}^{k+1} = \mathbf{o}^{k} + \mathbf{u}^{k}$$&lt;/p&gt;
+&lt;p&gt;改造后:&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{aligned}
+\mathbf{T}^{k}\left(\mathbf{u}^{k}\right) &amp;=\sigma\left(\mathbf{W}_{T}^{k} \mathbf{u}^{k}+\mathbf{b}_{T}^{k}\right) \\
+\mathbf{u}^{k+1} &amp;=\mathbf{o}^{k} \odot \mathbf{T}^{k}\left(\mathbf{u}^{k}\right)+\mathbf{u}^{k} \odot\left(1-\mathbf{T}^{k}\left(\mathbf{u}^{k}\right)\right)
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;h3 id=&#34;working-memory-networks&#34;&gt;Working Memory Networks&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Working Memory Networks: Augmenting Memory Networks with a Relational Reasoning Module (ACL-2018)&lt;/strong&gt; &lt;a href=&#34;https://www.aclweb.org/anthology/P18-1092/&#34;&gt;[paper]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;还记得上面说到End-To-End Memory Networks中已经有了Transformer的影子.
+时间来到2018年, &lt;code&gt;Attention is all you need&lt;/code&gt;已经卷席了整个NLP领域.
+这篇文章将multi-head attention引入到Memory Networks中, 同样是在多层记忆处下手.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-14-8.png&#34; alt=&#34;Working Memory Networks&#34;&gt;&lt;/p&gt;
+&lt;p&gt;与原始的End-To-End Memory Networks中通过QKV计算得到$\mathbf{o}_i$一样, 此处以$f_t(\mathbf{o}_{i-1})$作为Q ($f_t$为MLP层, $\mathbf{o}_{0}=\mathbf{u}$) , 而每个记忆单元都有多头的K和V, 然后完全按照multi-head attention的计算过程, 得到注意力输出$\mathbf{o}_{i}$.&lt;/p&gt;
+&lt;p&gt;疑惑的是这里只用到了堆叠的multi-head attention, 却没有skip-connection, 在multi-hops上不会出现梯度消失吗?&lt;/p&gt;
+&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
+&lt;p&gt;记忆网络可以分为静态记忆网络(&lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#memory-networks&#34;&gt;Memory Networks&lt;/a&gt;, &lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#end-to-end-memory-networks&#34;&gt;End-To-End Memory Networks&lt;/a&gt;, &lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#key-value-memory-networks&#34;&gt;Key-Value Memory Networks&lt;/a&gt;)和动态记忆网络(&lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#dynamic-memory-networks&#34;&gt;Dynamic Memory Networks&lt;/a&gt;, &lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#recurrent-entity-networks&#34;&gt;Recurrent Entity Networks&lt;/a&gt;, &lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#gated-end-to-end-memory-networks&#34;&gt;Gated End-to-End Memory Networks&lt;/a&gt;, &lt;a href=&#34;https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/#working-memory-networks&#34;&gt;Working Memory Networks&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;静态记忆网络的记忆单元一旦写入, 就不会进行更新, 改进点主要在于读取部分(如递归读取、注意力加权等).&lt;/p&gt;
+&lt;p&gt;而动态记忆网络会随着输入的不同, 记忆单元的内容也会发生改变, 改进点主要在于对记忆单元的更新, 也就是各种门控函数的设计.&lt;/p&gt;
+&lt;h3 id=&#34;致谢&#34;&gt;致谢&lt;/h3&gt;
+&lt;p&gt;知乎专栏: &lt;a href=&#34;https://www.zhihu.com/column/c_129532277&#34;&gt;记忆网络-Memory Network&lt;/a&gt;&lt;/p&gt;
+</content>
+            
+            
+            
+            
+            
+                
+                    
+                
+                    
+                        
+                            
+                            
+                            
+                                <category scheme="https://tmliang.github.io/tags/%E8%AE%B0%E5%BF%86%E7%BD%91%E7%BB%9C/" term="记忆网络" label="记忆网络" />
+                            
+                        
+                    
+                
+            
+        </entry>
+    
+        <entry>
             <title type="text">Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-13T19:56:26&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2021-03-13T12:50:10&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -37,7 +199,7 @@
 &lt;p&gt;为了解决这个问题, 本文通过构造人工特征, 建立起有监督样本和无监督样本之间的联系.&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;个人认为这段对DualRE的阐述比较勉强, 而且本文虽然建立起了两种数据之间的联系, 但并没有从根本上解决有/无监督样本之间的语义鸿沟.&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&#34;model&#34;&gt;Model&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/li2020exploit.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-13.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
 &lt;p&gt;模型从下到上可以分为四部分:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -107,7 +269,7 @@
             <title type="text">Learning Dual Retrieval Module for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-13T19:17:31&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2021-03-12T20:34:50&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -134,7 +296,7 @@
 &lt;p&gt;本文将&lt;strong&gt;关系抽取&lt;/strong&gt;和&lt;strong&gt;句子检索&lt;/strong&gt;视为对偶问题. 前者是输入句子, 输出关系标签; 后者是输入关系标签, 输出按照与该标签的相关性排序的句子列表.
 本文提出的方法可以看作以上两者的相互融合和相互弥补, 使用一个关系抽取模型和一个检索模型来投票表决, 并将选中样本的交集加入到下一轮的训练.&lt;/p&gt;
 &lt;h3 id=&#34;method&#34;&gt;Method&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/lin2019learning.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2021-03-12.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
 &lt;p&gt;本框架通过EM算法对两个模型进行迭代更新.&lt;/p&gt;
 &lt;p&gt;首先使用有标签训练集$L$对关系抽取模型$P_\theta$和检索模型$Q_\phi$进行预训练, 然后迭代进行以下EM步骤:&lt;/p&gt;
 &lt;ul&gt;
@@ -166,6 +328,7 @@ $$
 关系抽取模型和检索模型所挑选样本的权重分别为$p_\theta(y\mid x)^\alpha$和$q_\phi(x\mid y)^\beta$.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
+&lt;p&gt;本模块分为三个部分:&lt;/p&gt;
 &lt;h3 id=&#34;experiments&#34;&gt;Experiments&lt;/h3&gt;
 &lt;p&gt;作者在&lt;strong&gt;SemEval&lt;/strong&gt;和&lt;strong&gt;TACRED&lt;/strong&gt;上进行了多组实验, 实验结果分析如下:&lt;/p&gt;
 &lt;ol&gt;
@@ -233,7 +396,7 @@ $$
             <title type="text">An Improved Baseline for Sentence-level Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/" />
             <id>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</id>
-            <updated>2021-03-12T22:55:39&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2021-03-10T13:07:52&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -311,7 +474,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Effective Deep Memory Networks for Distant Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/</id>
-            <updated>2021-03-12T22:55:39&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2020-03-11T22:39:40&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -328,7 +491,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
 &lt;li&gt;不同关系之间的依赖(如包含, 冲突等), 对于某些隐式关系的推断很有帮助&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h3 id=&#34;method&#34;&gt;Method&lt;/h3&gt;
-&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/feng2019effective.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://tmliang.github.io/images/2020-03-11.png&#34; alt=&#34;模型框架图&#34;&gt;&lt;/p&gt;
 &lt;p&gt;模型主要分为三块:&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
@@ -393,7 +556,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">基于远程监督的关系抽取研究现状</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
             <id>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
-            <updated>2021-03-12T22:55:39&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2020-02-09T18:25:58&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -453,7 +616,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Text-Enhanced Representation Learning for Knowledge Graph</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/" />
             <id>https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/</id>
-            <updated>2021-03-12T22:55:39&#43;08:00</updated>
+            <updated>2021-03-14T23:35:18&#43;08:00</updated>
             <published>2019-09-18T18:14:51&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>

@@ -54,14 +54,14 @@
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "datePublished": "2021-03-12T20:34:50+08:00",
-        "dateModified": "2021-03-13T19:17:31+08:00",
+        "dateModified": "2021-03-14T23:35:18+08:00",
         "url": "https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/",
         "headline": "Learning Dual Retrieval Module for Semi-Supervised Relation Extraction",
         "description": "Learning Dual Retrieval Module for Semi-Supervised Relation Extraction (WWW-2019) [paper] [code] 本文将关系抽取和句子检索视为对偶问题, 通过两者的相互迭代促进,……",
         "inLanguage" : "zh-CN",
         "articleSection": "research",
-        "wordCount":  1620 ,
-        "image": ["https://tmliang.github.io/images/lin2019learning.png"],
+        "wordCount":  1630 ,
+        "image": ["https://tmliang.github.io/images/2021-03-12.png"],
         "author": {
             "@type": "Person",
             "description": "远方除了遥远, 一无所有",
@@ -101,10 +101,10 @@
 <meta property="og:description" content="Learning Dual Retrieval Module for Semi-Supervised Relation Extraction (WWW-2019) [paper] [code] 本文将关系抽取和句子检索视为对偶问题, 通过两者的相互迭代促进,……" />
 <meta property="og:url" content="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
 <meta property="og:site_name" content="九月" />
-<meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/lin2019learning.png" />
+<meta property="og:locale" content="zh" /><meta property="og:image" content="https://tmliang.github.io/images/2021-03-12.png" />
 <meta property="og:type" content="article" />
     <meta property="article:published_time" content="2021-03-12T20:34:50&#43;08:00" />
-    <meta property="article:modified_time" content="2021-03-13T19:17:31&#43;08:00" />
+    <meta property="article:modified_time" content="2021-03-14T23:35:18&#43;08:00" />
     
     <meta property="article:section" content="research" />
 
@@ -194,7 +194,7 @@
 <p>本文将<strong>关系抽取</strong>和<strong>句子检索</strong>视为对偶问题. 前者是输入句子, 输出关系标签; 后者是输入关系标签, 输出按照与该标签的相关性排序的句子列表.
 本文提出的方法可以看作以上两者的相互融合和相互弥补, 使用一个关系抽取模型和一个检索模型来投票表决, 并将选中样本的交集加入到下一轮的训练.</p>
 <h3 id="method"><a href="#method" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Method</h3>
-<p><img src="/images/lin2019learning.png" alt="模型框架图"></p>
+<p><img src="/images/2021-03-12.png" alt="模型框架图"></p>
 <p>本框架通过EM算法对两个模型进行迭代更新.</p>
 <p>首先使用有标签训练集$L$对关系抽取模型$P_\theta$和检索模型$Q_\phi$进行预训练, 然后迭代进行以下EM步骤:</p>
 <ul>
@@ -226,6 +226,7 @@ $$
 关系抽取模型和检索模型所挑选样本的权重分别为$p_\theta(y\mid x)^\alpha$和$q_\phi(x\mid y)^\beta$.</p>
 </li>
 </ol>
+<p>本模块分为三个部分:</p>
 <h3 id="experiments"><a href="#experiments" class="anchor-link"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="icon anchor-icon"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg></a>Experiments</h3>
 <p>作者在<strong>SemEval</strong>和<strong>TACRED</strong>上进行了多组实验, 实验结果分析如下:</p>
 <ol>
