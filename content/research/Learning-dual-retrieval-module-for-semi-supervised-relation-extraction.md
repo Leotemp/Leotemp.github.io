@@ -27,7 +27,7 @@ katex: true
 
 ### Method
 
-![模型框架图](/images/lin2019learning.png)
+![模型框架图](/images/2021-03-12.png)
 
 本框架通过EM算法对两个模型进行迭代更新.
 
@@ -57,6 +57,8 @@ katex: true
 
     考虑到伪标签样本和真实标签样本混合的话, 其中的错误标签可能会误导模型, 因此为伪标签样本设置样本权重. 
     关系抽取模型和检索模型所挑选样本的权重分别为$p\_\theta(y\mid x)^\alpha$和$q\_\phi(x\mid y)^\beta$.
+
+本模块分为三个部分:
 
 ### Experiments
 

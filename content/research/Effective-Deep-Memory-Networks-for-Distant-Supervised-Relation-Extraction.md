@@ -15,7 +15,7 @@ tags: ["关系抽取", "远程监督", "记忆网络"]
    
 ### Method
 
-![模型框架图](/images/feng2019effective.png)
+![模型框架图](/images/2020-03-11.png)
 
 模型主要分为三块:
 
