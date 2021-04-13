@@ -13,7 +13,7 @@ tags: ["linux"]
 
 #### 具体步骤:
 
-如果是以root用户来运行`sudo chmod 700 ./*`的, 直接以root身份恢复文件权限即可 (见3). 如果遇到上述情况(即sudo命令无法使用, 也无法通过root登录), 重启服务器, 执行下述步骤. 
+如果是以root身份来运行`sudo chmod 700 ./*`的, 直接以root身份恢复文件权限即可 (见4). 如果遇到上述情况(即sudo命令无法使用, 也无法通过root登录), 重启服务器, 执行下述步骤. 
 
 1. 进入GNU GRUB界面 (开机一直按着`Shift`键, 或者BIOS引导界面之后按`Esc`建), 选择`Advanced options for Ubuntu`, 回车.
 
