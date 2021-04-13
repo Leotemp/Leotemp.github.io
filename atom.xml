@@ -4,7 +4,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="zh-CN">
     <title type="text">九月</title>
     <subtitle type="html">记录我的科研生活</subtitle>
-    <updated>2021-04-13T13:40:09&#43;08:00</updated>
+    <updated>2021-04-13T13:53:41&#43;08:00</updated>
     <id>https://tmliang.github.io/</id>
     <link rel="alternate" type="text/html" href="https://tmliang.github.io/" />
     <link rel="self" type="application/atom&#43;xml" href="https://tmliang.github.io/atom.xml" />
@@ -20,7 +20,7 @@
             <title type="text">sudo chmod 700 /* 补救措施</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/sudo_chmod_700_%E8%A1%A5%E6%95%91/" />
             <id>https://tmliang.github.io/research/sudo_chmod_700_%E8%A1%A5%E6%95%91/</id>
-            <updated>2021-04-13T13:39:45&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2021-04-13T13:01:36&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -33,7 +33,7 @@
 &lt;p&gt;在&lt;a href=&#34;https://www.reddit.com/r/linuxquestions/comments/c578cl/accidentally_did_sudo_chmod_700/&#34;&gt;Reddit&lt;/a&gt;上找到解决方案, 通过&lt;code&gt;sudo su&lt;/code&gt;登陆为root, 然后把权限改回来.&lt;/p&gt;
 &lt;p&gt;然而现在所有的命令我都用不了, 包括&lt;code&gt;sudo&lt;/code&gt;. 于是直接打开服务器主机, 在本地进行修改, 但是在服务器上, 登录页面都出不来. 最后想到, 可以直接通过&lt;code&gt;recovery mode&lt;/code&gt;, 以root身份登录命令行, 进而恢复文件权限.&lt;/p&gt;
 &lt;h4 id=&#34;具体步骤&#34;&gt;具体步骤:&lt;/h4&gt;
-&lt;p&gt;如果是以root用户来运行&lt;code&gt;sudo chmod 700 ./*&lt;/code&gt;的, 直接以root身份恢复文件权限即可 (见3). 如果遇到上述情况(即sudo命令无法使用, 也无法通过root登录), 重启服务器, 执行下述步骤.&lt;/p&gt;
+&lt;p&gt;如果是以root身份来运行&lt;code&gt;sudo chmod 700 ./*&lt;/code&gt;的, 直接以root身份恢复文件权限即可 (见4). 如果遇到上述情况(即sudo命令无法使用, 也无法通过root登录), 重启服务器, 执行下述步骤.&lt;/p&gt;
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;进入GNU GRUB界面 (开机一直按着&lt;code&gt;Shift&lt;/code&gt;键, 或者BIOS引导界面之后按&lt;code&gt;Esc&lt;/code&gt;建), 选择&lt;code&gt;Advanced options for Ubuntu&lt;/code&gt;, 回车.&lt;/p&gt;
@@ -85,7 +85,7 @@
             <title type="text">Memory Networks 系列模型梳理</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/" />
             <id>https://tmliang.github.io/research/memory-networks-%E7%B3%BB%E5%88%97%E6%A8%A1%E5%9E%8B%E6%A2%B3%E7%90%86/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2021-03-14T10:32:06&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -247,7 +247,7 @@ $$
             <title type="text">Exploit Multiple Reference Graphs for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/exploit-multiple-reference-graphs-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2021-03-13T12:50:10&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -334,7 +334,7 @@ $$
             <title type="text">Learning Dual Retrieval Module for Semi-Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/learning-dual-retrieval-module-for-semi-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2021-03-12T20:34:50&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -461,7 +461,7 @@ $$
             <title type="text">An Improved Baseline for Sentence-level Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/" />
             <id>https://tmliang.github.io/research/an-improved-baseline-for-sentence-level-relation-extraction/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2021-03-10T13:07:52&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -539,7 +539,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Effective Deep Memory Networks for Distant Supervised Relation Extraction</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/" />
             <id>https://tmliang.github.io/research/effective-deep-memory-networks-for-distant-supervised-relation-extraction/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2020-03-11T22:39:40&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -621,7 +621,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">基于远程监督的关系抽取研究现状</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/" />
             <id>https://tmliang.github.io/research/%E5%9F%BA%E4%BA%8E%E8%BF%9C%E7%A8%8B%E7%9B%91%E7%9D%A3%E7%9A%84%E5%85%B3%E7%B3%BB%E6%8A%BD%E5%8F%96%E7%A0%94%E7%A9%B6%E7%8E%B0%E7%8A%B6/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2020-02-09T18:25:58&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
@@ -681,7 +681,7 @@ $$\frac{\partial \mathcal{L}_{\mathrm{conf}}}{l_{r}}=-\frac{2 \boldsymbol{p}_{r}
             <title type="text">Text-Enhanced Representation Learning for Knowledge Graph</title>
             <link rel="alternate" type="text/html" href="https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/" />
             <id>https://tmliang.github.io/research/text-enhanced-representation-learning-for-knowledge-graph/</id>
-            <updated>2021-03-14T23:41:32&#43;08:00</updated>
+            <updated>2021-04-13T13:53:33&#43;08:00</updated>
             <published>2019-09-18T18:14:51&#43;08:00</published>
             <author>
                     <name>Liang Tianming</name>
